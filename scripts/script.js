@@ -61,27 +61,39 @@ function multiplySolutions(x) {
   correctAnswers.push(correctAns);
 }
 
-function setTime(t) {}
-
-// function initTest(timer, numLength) {
-//   setTime(timer);
-//   multiply(numLength);
+// function handleQuestionSubmit(e, quizData) {
+//   e.preventDefault();
 // }
-
-function handleQuestionSubmit(e, quizData) {
-  e.preventDefault();
-}
 
 function runTest(playerParams) {
   const getForm = document.getElementById("quiz");
+  const getAnsBox = document.getElementById("answer");
   const getQuestion = document.getElementById("ansLabel");
   const getTimer = document.getElementById("timerText");
+  let count = Number(playerParams[0]);
+  let startTimer;
+  getAnsBox.autofocus = true;
+
   getForm.hidden = false;
-  getTimer.textContent = `🕒${playerParams[0]}`;
+  getTimer.textContent = `🕒${count}`;
   getTimer.hidden = false;
   getQuestion.textContent = `${getNumber(playerParams[1])} x ${getNumber(
     playerParams[1]
   )} =`;
+
+  if (!startTimer) {
+    setInterval(() => {
+      if (count > 0) {
+        count--;
+        getTimer.textContent = `🕒${count}`;
+      } else if (count === 0) {
+        clearInterval(startTimer);
+        timer = null;
+        getForm.hidden = true;
+        getTimer.textContent = "Time's up!";
+      }
+    }, 1000);
+  }
 }
 // create a function that takes in a time param and sets an interval based on it.
 
