@@ -75,7 +75,10 @@ function handleQuestionSubmit(e, quizData) {
 function runTest(playerParams) {
   const getForm = document.getElementById("quiz");
   const getQuestion = document.getElementById("ansLabel");
+  const getTimer = document.getElementById("timerText");
   getForm.hidden = false;
+  getTimer.textContent = `🕒${playerParams[0]}`;
+  getTimer.hidden = false;
   getQuestion.textContent = `${getNumber(playerParams[1])} x ${getNumber(
     playerParams[1]
   )} =`;
