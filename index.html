@@ -12,14 +12,44 @@
   <body>
     <!-- render a form once selected that shows one prompt for input at a time to get timer and difficulty preferences from user -->
     <button id="startBtn">Start a Math Quiz</button>
-    <!-- <form>
-      <h2>Select Timer</h2>
-      <h2>Select Difficulty</h2>
-      <button>Ready</button>
-    </form> -->
+    <br />
+    <form id="paramsForm" hidden>
+      <div id="q1">
+        <p>Select your time limit:</p>
+        <input type="radio" id="time1" name="timeSelect" value="60" />
+        <label for="time1">1 Min</label><br />
+        <input type="radio" id="time2" name="timeSelect" value="120" />
+        <label for="time2">2 Min</label><br />
+        <input type="radio" id="time3" name="timeSelect" value="180" />
+        <label for="time3">3 Min</label>
+        <br />
+        <button id="next1">Next</button>
+      </div>
+      <div id="q2" hidden>
+        <p>Select difficulty level:</p>
+        <input type="radio" id="easy" name="levelSelect" value="1" />
+        <label for="easy">Easy</label><br />
+        <input type="radio" id="medium" name="levelSelect" value="2" />
+        <label for="medium">Medium</label><br />
+        <input type="radio" id="hard" name="levelSelect" value="3" />
+        <label for="hard">Hard</label>
+        <br />
+        <button id="startTest" type="submit">Build Quiz</button>
+      </div>
+    </form>
+    <button id="runQuiz" hidden>Start Quiz</button>
+    <form id="quiz" hidden>
+      <label for="answer" id="ansLabel"></label>
+      <br />
+      <input type="text" id="answer" />
+      <br />
+      <button id="next3">Next</button>
+    </form>
+    <p id="timerText" hidden></p>
     <!-- render a show leaderboard button with JS: toggle it to "Hide Leaderboard" on click and to reveal the leaderboard saved in indexDB -->
     <!-- <button>Show Leaderboard</button> -->
-    <script src="./math.js"></script>
+    <!-- <script src="./scripts/leaderboard.js"></script> -->
+    <script src="./scripts/script.js"></script>
   </body>
   <footer></footer>
 </html>
