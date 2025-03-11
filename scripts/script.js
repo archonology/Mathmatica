@@ -28,8 +28,10 @@ let playerAnswers = [];
 const readyButton = document.getElementById("startBtn");
 const getParamsForm = document.getElementById("paramsForm");
 const next1 = document.getElementById("next1");
+const quiz = document.getElementById("quizForm");
 const q1 = document.getElementById("q1");
 const q2 = document.getElementById("q2");
+const answerInput = document.getElementById("answer");
 
 // playerData is initialized here and rewritten with the player data, which will be a new instance of the Player class.
 // let playerData = {};
@@ -66,7 +68,7 @@ function multiplySolutions(x) {
 // }
 
 function runTest(playerParams) {
-  const getForm = document.getElementById("quiz");
+  const getForm = document.getElementById("quizForm");
   const getAnsBox = document.getElementById("answer");
   const getQuestion = document.getElementById("ansLabel");
   const getTimer = document.getElementById("timerText");
@@ -154,4 +156,8 @@ getParamsForm.addEventListener("submit", (e) => {
   runTest(playerData);
   // the log below will return true or false based on if the levelSelect was checked or not.
   // console.log(e.target.levelSelect[0].checked);
+});
+quiz.addEventListener("submit", (e) => {
+  e.preventDefault();
+  console.log(e.target.answer.value);
 });
