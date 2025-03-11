@@ -21,15 +21,25 @@ class Player {
     this.initials = initials;
   }
 }
-// leaderboard will be an array of player data objects each pushed at the end of a player test session.
-const leaderboard = [];
-let correctAnswers = [];
-let playerAnswers = [];
+// html elements
 const readyButton = document.getElementById("startBtn");
 const getParamsForm = document.getElementById("paramsForm");
 const next1 = document.getElementById("next1");
+const quiz = document.getElementById("quizForm");
+const getQuestion = document.getElementById("ansLabel");
 const q1 = document.getElementById("q1");
 const q2 = document.getElementById("q2");
+const answerInput = document.getElementById("answer");
+const getForm = document.getElementById("quizForm");
+const getAnsBox = document.getElementById("answer");
+const getTimer = document.getElementById("timerText");
+// leaderboard will be an array of player data objects each pushed at the end of a player test session.
+const leaderboard = [];
+// this will take some processing before info gets here or after to make sure the data is exactly what we want to print in the leaderboard.(ie. right now, player level is indicated numerically because that makes it easier to set the digits in the test, but we need it to print "easy" or "medium" etc. Seems best to use the numbers for setting up the test, and then process the data for the leaderboard return.)
+const playerData = [];
+let correctAnswers = [];
+let playerAnswers = [];
+let playerScore = 0;
 
 // playerData is initialized here and rewritten with the player data, which will be a new instance of the Player class.
 // let playerData = {};
@@ -45,41 +55,25 @@ const q2 = document.getElementById("q2");
 //   "8/17/2025",
 //   "JRS"
 // );
-// console.log(newPlayer.initials);
-function getNumber(x) {
-  const min = Math.pow(10, x - 1);
-  const max = Math.pow(10, x) - 1;
-  const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-  return randomNumber;
-  // // Example usage: generate a 4-digit random number
-  // getNumber(4);
-  //
-}
-
-function multiplySolutions(x) {
-  const correctAns = getNumber(x) * getNumber(x);
-  correctAnswers.push(correctAns);
-}
-
-// function handleQuestionSubmit(e, quizData) {
-//   e.preventDefault();
-// }
-
-function runTest(playerParams) {
-  const getForm = document.getElementById("quiz");
-  const getAnsBox = document.getElementById("answer");
-  const getQuestion = document.getElementById("ansLabel");
-  const getTimer = document.getElementById("timerText");
-  let count = Number(playerParams[0]);
+function initQuiz(e) {
+  e.preventDefault(e);
+  q2.hidden = true;
+  for (let i = 0; i < e.target.timeSelect.length; i++) {
+    if (e.target.timeSelect[i].checked === true) {
+      playerData.push(e.target.timeSelect[i].value);
+    }
+  }
+  for (let i = 0; i < e.target.levelSelect.length; i++) {
+    if (e.target.levelSelect[i].checked === true) {
+      playerData.push(e.target.levelSelect[i].value);
+    }
+  }
+  let count = Number(playerData[0]);
   let startTimer;
-  getAnsBox.autofocus = true;
-
   getForm.hidden = false;
   getTimer.textContent = `🕒${count}`;
   getTimer.hidden = false;
-  getQuestion.textContent = `${getNumber(playerParams[1])} x ${getNumber(
-    playerParams[1]
-  )} =`;
+  runTest(playerData);
 
   if (!startTimer) {
     setInterval(() => {
@@ -91,11 +85,40 @@ function runTest(playerParams) {
         timer = null;
         getForm.hidden = true;
         getTimer.textContent = "Time's up!";
+        // insert function for processing answers, collecting player initials, saving to indexDB and localStorage, and returning updated leaderboard.
       }
     }, 1000);
   }
 }
-// create a function that takes in a time param and sets an interval based on it.
+
+function getNumber(x) {
+  const min = Math.pow(10, x - 1);
+  const max = Math.pow(10, x) - 1;
+  const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+  return randomNumber;
+}
+
+function multiplyPrintPush(x) {
+  let num1 = getNumber(x);
+  let num2 = getNumber(x);
+  const correctAn = num1 * num2;
+  getQuestion.textContent = `${num1} x ${num2} =`;
+  correctAnswers.push(correctAn);
+  console.log(correctAnswers);
+}
+
+function runQs() {
+  getAnsBox.value = "";
+  getAnsBox.focus = true;
+  multiplyPrintPush(playerData[1]);
+}
+
+function processPlayerInput(e) {
+  e.preventDefault();
+  playerAnswers.push(e.target.answer.value);
+  console.log(playerAnswers);
+  runQs();
+}
 
 //the time interval function gets called in a function that creates a form element that consists of one math question with one player input. It appends the results (the player's selection and the correct answer) to an object that will get stored and used for generating the final results when the time interval expires. This will get passed to a function that handles saving things to the leaderboard.
 
@@ -127,31 +150,11 @@ readyButton.addEventListener(
 );
 
 next1.addEventListener("click", (e) => {
-  //prevent the DOM from reloading when the next button is clicked.
   e.preventDefault();
   q1.hidden = true;
   q2.hidden = false;
 });
 
-getParamsForm.addEventListener("submit", (e) => {
-  e.preventDefault(e);
-  q2.hidden = true;
-  const playerData = [];
-  for (let i = 0; i < e.target.timeSelect.length; i++) {
-    if (e.target.timeSelect[i].checked === true) {
-      console.log(e.target.timeSelect[i]);
-      playerData.push(e.target.timeSelect[i].value);
-      console.log(playerData);
-    }
-  }
-  for (let i = 0; i < e.target.levelSelect.length; i++) {
-    if (e.target.levelSelect[i].checked === true) {
-      console.log(e.target.levelSelect[i]);
-      playerData.push(e.target.levelSelect[i].value);
-      console.log(playerData);
-    }
-  }
-  runTest(playerData);
-  // the log below will return true or false based on if the levelSelect was checked or not.
-  // console.log(e.target.levelSelect[0].checked);
-});
+getParamsForm.addEventListener("submit", initQuiz);
+
+quiz.addEventListener("submit", processPlayerInput);
