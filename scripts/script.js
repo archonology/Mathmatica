@@ -23,15 +23,20 @@ class Player {
 }
 // leaderboard will be an array of player data objects each pushed at the end of a player test session.
 const leaderboard = [];
+const playerData = [];
 let correctAnswers = [];
 let playerAnswers = [];
 const readyButton = document.getElementById("startBtn");
 const getParamsForm = document.getElementById("paramsForm");
 const next1 = document.getElementById("next1");
 const quiz = document.getElementById("quizForm");
+const getQuestion = document.getElementById("ansLabel");
 const q1 = document.getElementById("q1");
 const q2 = document.getElementById("q2");
 const answerInput = document.getElementById("answer");
+const getForm = document.getElementById("quizForm");
+const getAnsBox = document.getElementById("answer");
+const getTimer = document.getElementById("timerText");
 
 // playerData is initialized here and rewritten with the player data, which will be a new instance of the Player class.
 // let playerData = {};
@@ -59,43 +64,53 @@ function getNumber(x) {
 }
 
 function multiplySolutions(x) {
-  const correctAns = getNumber(x) * getNumber(x);
-  correctAnswers.push(correctAns);
+  let num1 = getNumber(x);
+  let num2 = getNumber(x);
+  const correctAn = num1 * num2;
+  getQuestion.textContent = `${num1} x ${num2} =`;
+  correctAnswers.push(correctAn);
+  console.log(correctAnswers);
 }
 
 // function handleQuestionSubmit(e, quizData) {
 //   e.preventDefault();
 // }
 
-function runTest(playerParams) {
-  const getForm = document.getElementById("quizForm");
-  const getAnsBox = document.getElementById("answer");
-  const getQuestion = document.getElementById("ansLabel");
-  const getTimer = document.getElementById("timerText");
-  let count = Number(playerParams[0]);
-  let startTimer;
-  getAnsBox.autofocus = true;
+function runTest() {
+  // let count = Number(playerParams[0]);
+  // let startTimer;
 
-  getForm.hidden = false;
-  getTimer.textContent = `🕒${count}`;
-  getTimer.hidden = false;
-  getQuestion.textContent = `${getNumber(playerParams[1])} x ${getNumber(
-    playerParams[1]
-  )} =`;
+  // getForm.hidden = false;
+  // getTimer.textContent = `🕒${count}`;
+  // getTimer.hidden = false;
+  getAnsBox.value = "";
+  getAnsBox.focus = true;
+  multiplySolutions(playerData[1]);
+  // getQuestion.textContent = `${getNumber(playerParams[1])} x ${getNumber(
+  //   playerParams[1]
+  // )} =`;
 
-  if (!startTimer) {
-    setInterval(() => {
-      if (count > 0) {
-        count--;
-        getTimer.textContent = `🕒${count}`;
-      } else if (count === 0) {
-        clearInterval(startTimer);
-        timer = null;
-        getForm.hidden = true;
-        getTimer.textContent = "Time's up!";
-      }
-    }, 1000);
-  }
+  // if (!startTimer) {
+  //   setInterval(() => {
+  //     if (count > 0) {
+  //       count--;
+  //       getTimer.textContent = `🕒${count}`;
+  //     } else if (count === 0) {
+  //       clearInterval(startTimer);
+  //       timer = null;
+  //       getForm.hidden = true;
+  //       getTimer.textContent = "Time's up!";
+  //     }
+  //   }, 1000);
+  // }
+}
+
+function processPlayerInput(e) {
+  e.preventDefault();
+  console.log(e.target.answer.value);
+  playerAnswers.push(e.target.answer.value);
+  runTest();
+  console.log(playerAnswers);
 }
 // create a function that takes in a time param and sets an interval based on it.
 
@@ -138,26 +153,39 @@ next1.addEventListener("click", (e) => {
 getParamsForm.addEventListener("submit", (e) => {
   e.preventDefault(e);
   q2.hidden = true;
-  const playerData = [];
+  // const playerData = [];
   for (let i = 0; i < e.target.timeSelect.length; i++) {
     if (e.target.timeSelect[i].checked === true) {
-      console.log(e.target.timeSelect[i]);
       playerData.push(e.target.timeSelect[i].value);
-      console.log(playerData);
+      // console.log(playerData);
     }
   }
   for (let i = 0; i < e.target.levelSelect.length; i++) {
     if (e.target.levelSelect[i].checked === true) {
-      console.log(e.target.levelSelect[i]);
       playerData.push(e.target.levelSelect[i].value);
-      console.log(playerData);
+      // console.log(playerData);
     }
   }
+  let count = Number(playerData[0]);
+  let startTimer;
+  getForm.hidden = false;
+  getTimer.textContent = `🕒${count}`;
+  getTimer.hidden = false;
   runTest(playerData);
-  // the log below will return true or false based on if the levelSelect was checked or not.
-  // console.log(e.target.levelSelect[0].checked);
+
+  if (!startTimer) {
+    setInterval(() => {
+      if (count > 0) {
+        count--;
+        getTimer.textContent = `🕒${count}`;
+      } else if (count === 0) {
+        clearInterval(startTimer);
+        timer = null;
+        getForm.hidden = true;
+        getTimer.textContent = "Time's up!";
+      }
+    }, 1000);
+  }
 });
-quiz.addEventListener("submit", (e) => {
-  e.preventDefault();
-  console.log(e.target.answer.value);
-});
+
+quiz.addEventListener("submit", processPlayerInput);
