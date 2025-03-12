@@ -55,6 +55,38 @@ let playerScore = 0;
 //   "8/17/2025",
 //   "JRS"
 // );
+
+// Correct: Proper scope and ID handling
+let intervalId; // Declare in a wider scope
+let count;
+
+// function handleTime(x) {
+//   count = x;
+//   if (count === 0) {
+//     stopInterval();
+//   }
+//   startInterval();
+// }
+
+function startInterval() {
+  intervalId = setInterval(() => {
+    count--;
+    getTimer.textContent = `🕒${count}`;
+    console.log(count);
+    if (count === 0) {
+      console.log("hello?");
+      stopInterval();
+    }
+  }, 1000);
+  return;
+}
+
+function stopInterval() {
+  clearInterval(intervalId);
+  count = null; // Now it works
+  getForm.hidden = true;
+  printSummary();
+}
 function initQuiz(e) {
   e.preventDefault(e);
   q2.hidden = true;
@@ -68,27 +100,27 @@ function initQuiz(e) {
       playerData.push(e.target.levelSelect[i].value);
     }
   }
-  let count = Number(playerData[0]);
-  let startTimer;
+  count = Number(playerData[0]);
   getForm.hidden = false;
-  getTimer.textContent = `🕒${count}`;
+  // getTimer.textContent = `🕒${count}`;
   getTimer.hidden = false;
-  runTest(playerData);
+  getAnsBox.focus = true;
+  runQs(playerData);
+  // handleTime(count);
+  startInterval();
+}
 
-  if (!startTimer) {
-    setInterval(() => {
-      if (count > 0) {
-        count--;
-        getTimer.textContent = `🕒${count}`;
-      } else if (count === 0) {
-        clearInterval(startTimer);
-        timer = null;
-        getForm.hidden = true;
-        getTimer.textContent = "Time's up!";
-        // insert function for processing answers, collecting player initials, saving to indexDB and localStorage, and returning updated leaderboard.
-      }
-    }, 1000);
+function printSummary() {
+  // console.log("what?");
+  for (let i = 0; i < playerAnswers.length; i++) {
+    if (Number(playerAnswers[i]) === correctAnswers[i]) {
+      playerScore++;
+    }
   }
+  // let percent = playerScore / correctAnswers.length;
+  getTimer.textContent = `Time's up!
+        You answered ${playerAnswers.length} math problems
+        and you got ${playerScore}/${correctAnswers.length}!`;
 }
 
 function getNumber(x) {
@@ -104,7 +136,7 @@ function multiplyPrintPush(x) {
   const correctAn = num1 * num2;
   getQuestion.textContent = `${num1} x ${num2} =`;
   correctAnswers.push(correctAn);
-  console.log(correctAnswers);
+  // console.log(correctAnswers);
 }
 
 function runQs() {
@@ -116,7 +148,7 @@ function runQs() {
 function processPlayerInput(e) {
   e.preventDefault();
   playerAnswers.push(e.target.answer.value);
-  console.log(playerAnswers);
+  // console.log(playerAnswers);
   runQs();
 }
 
