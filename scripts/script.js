@@ -56,17 +56,8 @@ let playerScore = 0;
 //   "JRS"
 // );
 
-// Correct: Proper scope and ID handling
-let intervalId; // Declare in a wider scope
+let intervalId;
 let count;
-
-// function handleTime(x) {
-//   count = x;
-//   if (count === 0) {
-//     stopInterval();
-//   }
-//   startInterval();
-// }
 
 function startInterval() {
   intervalId = setInterval(() => {
@@ -102,25 +93,23 @@ function initQuiz(e) {
   }
   count = Number(playerData[0]);
   getForm.hidden = false;
-  // getTimer.textContent = `🕒${count}`;
   getTimer.hidden = false;
   getAnsBox.focus = true;
-  runQs(playerData);
-  // handleTime(count);
   startInterval();
 }
 
 function printSummary() {
-  // console.log("what?");
   for (let i = 0; i < playerAnswers.length; i++) {
     if (Number(playerAnswers[i]) === correctAnswers[i]) {
       playerScore++;
     }
   }
-  // let percent = playerScore / correctAnswers.length;
+  let percent = (playerScore / (correctAnswers.length - 1)) * 100;
   getTimer.textContent = `Time's up!
         You answered ${playerAnswers.length} math problems
-        and you got ${playerScore}/${correctAnswers.length}!`;
+        and you got ${playerScore}/${
+    correctAnswers.length - 1
+  }(${percent}%) correct!`;
 }
 
 function getNumber(x) {
