@@ -33,6 +33,7 @@ const answerInput = document.getElementById("answer");
 const getForm = document.getElementById("quizForm");
 const getAnsBox = document.getElementById("answer");
 const getTimer = document.getElementById("timerText");
+const resetBtn = document.getElementById("resetBtn");
 // leaderboard will be an array of player data objects each pushed at the end of a player test session.
 const leaderboard = [];
 // this will take some processing before info gets here or after to make sure the data is exactly what we want to print in the leaderboard.(ie. right now, player level is indicated numerically because that makes it easier to set the digits in the test, but we need it to print "easy" or "medium" etc. Seems best to use the numbers for setting up the test, and then process the data for the leaderboard return.)
@@ -40,6 +41,8 @@ const playerData = [];
 let correctAnswers = [];
 let playerAnswers = [];
 let playerScore = 0;
+let intervalId;
+let count;
 
 // playerData is initialized here and rewritten with the player data, which will be a new instance of the Player class.
 // let playerData = {};
@@ -55,9 +58,6 @@ let playerScore = 0;
 //   "8/17/2025",
 //   "JRS"
 // );
-
-let intervalId;
-let count;
 
 function startInterval() {
   intervalId = setInterval(() => {
@@ -78,6 +78,7 @@ function stopInterval() {
   getForm.hidden = true;
   printSummary();
 }
+
 function initQuiz(e) {
   e.preventDefault(e);
   q2.hidden = true;
@@ -95,6 +96,7 @@ function initQuiz(e) {
   getForm.hidden = false;
   getTimer.hidden = false;
   getAnsBox.focus = true;
+  runQs();
   startInterval();
 }
 
@@ -106,10 +108,10 @@ function printSummary() {
   }
   let percent = (playerScore / (correctAnswers.length - 1)) * 100;
   getTimer.textContent = `Time's up!
-        You answered ${playerAnswers.length} math problems
-        and you got ${playerScore}/${
+        You  got ${playerScore}/${
     correctAnswers.length - 1
   }(${percent}%) correct!`;
+  // reveal a hidden html reset button that reloads the page (thus test)
 }
 
 function getNumber(x) {
@@ -164,6 +166,7 @@ function processPlayerInput(e) {
 readyButton.addEventListener(
   "click",
   () => {
+    getTimer.hidden = true;
     getParamsForm.hidden = false;
     readyButton.hidden = true;
   }
@@ -179,3 +182,7 @@ next1.addEventListener("click", (e) => {
 getParamsForm.addEventListener("submit", initQuiz);
 
 quiz.addEventListener("submit", processPlayerInput);
+
+resetBtn.addEventListener("click", () => {
+  window.location.reload();
+});
