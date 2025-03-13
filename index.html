@@ -23,7 +23,7 @@
         <input type="radio" id="time3" name="timeSelect" value="180" />
         <label for="time3">3 Min</label>
         <br />
-        <button id="next1">Next</button>
+        <button id="next1" class="minorBtn">Next</button>
       </div>
       <div id="q2" hidden>
         <p>Select difficulty level:</p>
@@ -34,23 +34,25 @@
         <input type="radio" id="hard" name="levelSelect" value="3" />
         <label for="hard">Hard</label>
         <br />
-        <button id="startTest" type="submit">Build Quiz</button>
+        <button id="startTest" type="submit" class="minorBtn">
+          Start Quiz
+        </button>
       </div>
     </form>
-    <button id="runQuiz" hidden>Start Quiz</button>
+    <!-- <button id="runQuiz" hidden>Start Quiz</button> -->
     <form id="quizForm" hidden>
       <label for="answer" id="ansLabel"></label>
       <br />
       <input type="text" id="answer" />
       <br />
-      <button type="submit" id="next3">Next</button>
+      <button type="submit" id="next3" class="minorBtn">Next</button>
     </form>
     <p id="timerText" hidden></p>
     <br />
-    <button id="resetBtn">Reset</button>
+    <button id="resetBtn" class="minorBtn">Reset</button>
     <!-- render a show leaderboard button with JS: toggle it to "Hide Leaderboard" on click and to reveal the leaderboard saved in indexDB -->
     <!-- <button>Show Leaderboard</button> -->
-    <!-- <script src="./scripts/leaderboard.js"></script> -->
+    <script src="./scripts/leaderboard.js"></script>
     <script src="./scripts/script.js"></script>
   </body>
   <footer></footer>

@@ -62,10 +62,7 @@ form {
   font-family: monospace;
 }
 
-#next1,
-#next2,
-#leaderBtn,
-#next3 {
+.minorBtn {
   padding: 0.5em 1em 0.5em 1em;
   margin-top: 1em;
   font-size: 20px;
