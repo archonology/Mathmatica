@@ -34,6 +34,7 @@ const getForm = document.getElementById("quizForm");
 const getAnsBox = document.getElementById("answer");
 const getTimer = document.getElementById("timerText");
 const resetBtn = document.getElementById("resetBtn");
+const getSaveForm = document.getElementById("savePlayer");
 // leaderboard will be an array of player data objects each pushed at the end of a player test session.
 const leaderboard = [];
 // this will take some processing before info gets here or after to make sure the data is exactly what we want to print in the leaderboard.(ie. right now, player level is indicated numerically because that makes it easier to set the digits in the test, but we need it to print "easy" or "medium" etc. Seems best to use the numbers for setting up the test, and then process the data for the leaderboard return.)
@@ -41,6 +42,7 @@ const playerData = [];
 let correctAnswers = [];
 let playerAnswers = [];
 let playerScore = 0;
+let scorePercent = 0.0;
 let intervalId;
 let count;
 
@@ -63,9 +65,7 @@ function startInterval() {
   intervalId = setInterval(() => {
     count--;
     getTimer.textContent = `🕒${count}`;
-    console.log(count);
     if (count === 0) {
-      console.log("hello?");
       stopInterval();
     }
   }, 1000);
@@ -106,12 +106,19 @@ function printSummary() {
       playerScore++;
     }
   }
-  let percent = (playerScore / (correctAnswers.length - 1)) * 100;
+  scorePercent = (playerScore / (correctAnswers.length - 1)) * 100;
+  scorePercent = scorePercent.toFixed(2);
   getTimer.textContent = `Time's up!
         You  got ${playerScore}/${
     correctAnswers.length - 1
-  }(${percent}%) correct!`;
+  }(${scorePercent}%) correct!`;
+  getSaveForm.hidden = false;
   // reveal a hidden html reset button that reloads the page (thus test)
+}
+
+function savePlayer(e) {
+  e.preventDefault();
+  console.log(e.target.playerInitials.value);
 }
 
 function getNumber(x) {
@@ -186,3 +193,5 @@ quiz.addEventListener("submit", processPlayerInput);
 resetBtn.addEventListener("click", () => {
   window.location.reload();
 });
+
+getSaveForm.addEventListener("submit", savePlayer);
