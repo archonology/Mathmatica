@@ -118,7 +118,37 @@ function printSummary() {
 
 function savePlayer(e) {
   e.preventDefault();
-  console.log(e.target.playerInitials.value);
+  // console.log(e.target.playerInitials.value);
+  let newInitials = e.target.playerInitials.value;
+  let today = new Date();
+  let formattedDate = today.toLocaleDateString();
+  let formattedDifficulty = formatDifficulty();
+  console.log(formattedDifficulty);
+  const newPlayer = new Player(
+    // when I add new types of math tests, this will be dynamically rendered.
+    "multiplication",
+    `${playerData[0]}s`,
+    formattedDifficulty,
+    correctAnswers.length - 1,
+    playerScore,
+    `${playerScore}/${correctAnswers.length - 1}`,
+    scorePercent,
+    formattedDate,
+    newInitials
+  );
+  console.log(newPlayer);
+}
+
+function formatDifficulty() {
+  let formattedDifficulty;
+  if (playerData[1] === "1") {
+    formattedDifficulty = "easy";
+  } else if (playerData[1] === "2") {
+    formattedDifficulty = "medium";
+  } else {
+    formattedDifficulty = "hard";
+  }
+  return formattedDifficulty;
 }
 
 function getNumber(x) {
