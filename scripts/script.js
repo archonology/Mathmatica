@@ -28,6 +28,7 @@ const readyButton = document.getElementById("startBtn");
 const getParamsForm = document.getElementById("paramsForm");
 const next1 = document.getElementById("next1");
 const quiz = document.getElementById("quizForm");
+const leadBtn = document.getElementById("leaderBtn");
 const getQuestion = document.getElementById("ansLabel");
 const q1 = document.getElementById("q1");
 const q2 = document.getElementById("q2");
@@ -37,9 +38,7 @@ const getAnsBox = document.getElementById("answer");
 const getTimer = document.getElementById("timerText");
 const resetBtn = document.getElementById("resetBtn");
 const getSaveForm = document.getElementById("savePlayer");
-// leaderboard will be an array of player data objects each pushed at the end of a player test session.
-const leaderboard = [];
-// this will take some processing before info gets here or after to make sure the data is exactly what we want to print in the leaderboard.(ie. right now, player level is indicated numerically because that makes it easier to set the digits in the test, but we need it to print "easy" or "medium" etc. Seems best to use the numbers for setting up the test, and then process the data for the leaderboard return.)
+// global objects
 const playerData = [];
 let correctAnswers = [];
 let playerAnswers = [];
@@ -47,8 +46,6 @@ let playerScore = 0;
 let scorePercent = 0.0;
 let intervalId;
 let count;
-// IndexedDB Helper Functions
-
 const dbName = "playerDB";
 const storeName = "playerStore";
 
@@ -191,11 +188,14 @@ function stopInterval() {
 function initQuiz(e) {
   e.preventDefault(e);
   q2.hidden = true;
+  resetBtn.hidden = false;
+  //Get player time select choice
   for (let i = 0; i < e.target.timeSelect.length; i++) {
     if (e.target.timeSelect[i].checked === true) {
       playerData.push(e.target.timeSelect[i].value);
     }
   }
+  //Get player level select choice
   for (let i = 0; i < e.target.levelSelect.length; i++) {
     if (e.target.levelSelect[i].checked === true) {
       playerData.push(e.target.levelSelect[i].value);
@@ -205,6 +205,7 @@ function initQuiz(e) {
   getForm.hidden = false;
   getTimer.hidden = false;
   getAnsBox.focus = true;
+  leadBtn.hidden = true;
   runQs();
   startInterval();
 }
@@ -289,6 +290,15 @@ function processPlayerInput(e) {
   // console.log(playerAnswers);
   runQs();
 }
+
+function toggleLeader() {
+  leadBtn.textContent === "Show Leaderboard"
+    ? (leadBtn.textContent = "Hide Leaderboard")
+    : (leadBtn.textContent = "Show Leaderboard");
+}
+
+// listen for the leaderboard button click
+leadBtn.addEventListener("click", toggleLeader);
 
 //the time interval function gets called in a function that creates a form element that consists of one math question with one player input. It appends the results (the player's selection and the correct answer) to an object that will get stored and used for generating the final results when the time interval expires. This will get passed to a function that handles saving things to the leaderboard.
 
