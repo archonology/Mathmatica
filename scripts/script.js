@@ -8,7 +8,8 @@ class Player {
     sumScore,
     percent,
     date,
-    initials
+    initials,
+    _id
   ) {
     this.type = type;
     this.time = time;
@@ -19,6 +20,7 @@ class Player {
     this.percent = percent;
     this.date = date;
     this.initials = initials;
+    this._id = _id;
   }
 }
 // html elements
@@ -33,6 +35,8 @@ const answerInput = document.getElementById("answer");
 const getForm = document.getElementById("quizForm");
 const getAnsBox = document.getElementById("answer");
 const getTimer = document.getElementById("timerText");
+const resetBtn = document.getElementById("resetBtn");
+const getSaveForm = document.getElementById("savePlayer");
 // leaderboard will be an array of player data objects each pushed at the end of a player test session.
 const leaderboard = [];
 // this will take some processing before info gets here or after to make sure the data is exactly what we want to print in the leaderboard.(ie. right now, player level is indicated numerically because that makes it easier to set the digits in the test, but we need it to print "easy" or "medium" etc. Seems best to use the numbers for setting up the test, and then process the data for the leaderboard return.)
@@ -40,41 +44,137 @@ const playerData = [];
 let correctAnswers = [];
 let playerAnswers = [];
 let playerScore = 0;
-
-// playerData is initialized here and rewritten with the player data, which will be a new instance of the Player class.
-// let playerData = {};
-// this function can be fed params from the param form to return the desired random number based on digits. (easy mode: single digit, medium: two digits, hard: three digits)
-// sample instance of player
-// const newPlayer = new Player(
-//   "60",
-//   "easy",
-//   "10",
-//   "9",
-//   "9/10",
-//   "90%",
-//   "8/17/2025",
-//   "JRS"
-// );
-
-// Correct: Proper scope and ID handling
-let intervalId; // Declare in a wider scope
+let scorePercent = 0.0;
+let intervalId;
 let count;
+// IndexedDB Helper Functions
 
-// function handleTime(x) {
-//   count = x;
-//   if (count === 0) {
-//     stopInterval();
-//   }
-//   startInterval();
-// }
+const dbName = "playerDB";
+const storeName = "playerStore";
+
+async function saveObjectToIndexedDB(object) {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(dbName, 1);
+
+    request.onerror = (event) => {
+      console.error("IndexedDB error:", event);
+      reject(event.target.error);
+    };
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains(storeName)) {
+        db.createObjectStore(storeName, { autoIncrement: true });
+      }
+    };
+
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      const transaction = db.transaction([storeName], "readwrite");
+      const store = transaction.objectStore(storeName);
+      const addRequest = store.add(object);
+
+      addRequest.onsuccess = () => {
+        resolve(addRequest.result); // Resolve with the generated key
+      };
+
+      addRequest.onerror = (event) => {
+        console.error("Error adding to IndexedDB:", event);
+        reject(event.target.error);
+      };
+
+      transaction.oncomplete = () => {
+        db.close();
+      };
+    };
+  });
+}
+
+async function saveObjectToLocalStorage(key, object) {
+  return new Promise((resolve, reject) => {
+    try {
+      localStorage.setItem(key, JSON.stringify(object));
+      resolve();
+    } catch (error) {
+      console.error("Error saving to localStorage:", error);
+      reject(error);
+    }
+  });
+}
+
+// save to indexedDB and localStorage:
+async function saveToDB(newPlayer) {
+  try {
+    const idbKey = await saveObjectToIndexedDB(newPlayer);
+    console.log("Object saved to IndexedDB with key:", idbKey);
+
+    await saveObjectToLocalStorage("lastPlayer", newPlayer);
+    console.log("Object saved to localStorage");
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+//Retrieving from local storage.
+function getObjectFromLocalStorage(key) {
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : null;
+  } catch (error) {
+    console.error("Error retrieving from local storage:", error);
+    return null;
+  }
+}
+
+//Retrieving from indexedDB.
+async function getObjectFromIndexedDB(key) {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(dbName, 1);
+    request.onerror = (event) => {
+      console.error("IndexedDB error:", event);
+      reject(event.target.error);
+    };
+
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      const transaction = db.transaction([storeName], "readonly");
+      const store = transaction.objectStore(storeName);
+      const getRequest = store.get(key);
+
+      getRequest.onsuccess = (event) => {
+        resolve(event.target.result);
+      };
+
+      getRequest.onerror = (event) => {
+        console.error("Error getting object from IndexedDB:", event);
+        reject(event.target.error);
+      };
+
+      transaction.oncomplete = () => {
+        db.close();
+      };
+    };
+  });
+}
+
+// basic retrieve usage
+async function getLeaderboardData() {
+  try {
+    const retrievedLocalStorage = getObjectFromLocalStorage("lastPlayer");
+    console.log("Retrieved from local storage: ", retrievedLocalStorage);
+
+    const retrievedIndexedDB = await getObjectFromIndexedDB(1); //Assuming the first object saved had key 1.
+    console.log("Retrieved from IndexedDB: ", retrievedIndexedDB);
+  } catch (error) {
+    console.error("Error retrieving: ", error);
+  }
+}
 
 function startInterval() {
   intervalId = setInterval(() => {
     count--;
     getTimer.textContent = `🕒${count}`;
-    console.log(count);
     if (count === 0) {
-      console.log("hello?");
       stopInterval();
     }
   }, 1000);
@@ -87,6 +187,7 @@ function stopInterval() {
   getForm.hidden = true;
   printSummary();
 }
+
 function initQuiz(e) {
   e.preventDefault(e);
   q2.hidden = true;
@@ -102,25 +203,62 @@ function initQuiz(e) {
   }
   count = Number(playerData[0]);
   getForm.hidden = false;
-  // getTimer.textContent = `🕒${count}`;
   getTimer.hidden = false;
   getAnsBox.focus = true;
-  runQs(playerData);
-  // handleTime(count);
+  runQs();
   startInterval();
 }
 
 function printSummary() {
-  // console.log("what?");
   for (let i = 0; i < playerAnswers.length; i++) {
     if (Number(playerAnswers[i]) === correctAnswers[i]) {
       playerScore++;
     }
   }
-  // let percent = playerScore / correctAnswers.length;
+  scorePercent = (playerScore / (correctAnswers.length - 1)) * 100;
+  scorePercent = scorePercent.toFixed(2);
   getTimer.textContent = `Time's up!
-        You answered ${playerAnswers.length} math problems
-        and you got ${playerScore}/${correctAnswers.length}!`;
+        You  got ${playerScore}/${
+    correctAnswers.length - 1
+  }(${scorePercent}%) correct!`;
+  getSaveForm.hidden = false;
+  // reveal a hidden html reset button that reloads the page (thus test)
+}
+
+function savePlayer(e) {
+  e.preventDefault();
+  // console.log(e.target.playerInitials.value);
+  let newInitials = e.target.playerInitials.value;
+  let today = new Date();
+  let formattedDate = today.toLocaleDateString();
+  let formattedDifficulty = formatDifficulty();
+  console.log(formattedDifficulty);
+  const newPlayer = new Player(
+    // when I add new types of math tests, this will be dynamically rendered.
+    "multiplication",
+    `${playerData[0]}s`,
+    formattedDifficulty,
+    correctAnswers.length - 1,
+    playerScore,
+    `${playerScore}/${correctAnswers.length - 1}`,
+    scorePercent,
+    formattedDate,
+    newInitials
+  );
+  console.log(newPlayer);
+  saveToDB(newPlayer);
+}
+
+function formatDifficulty() {
+  let formattedDifficulty;
+  if (playerData[1] === "1") {
+    formattedDifficulty = "easy";
+  } else if (playerData[1] === "2") {
+    formattedDifficulty = "medium";
+  } else {
+    formattedDifficulty = "hard";
+  }
+  return formattedDifficulty;
 }
 
 function getNumber(x) {
@@ -154,27 +292,11 @@ function processPlayerInput(e) {
 
 //the time interval function gets called in a function that creates a form element that consists of one math question with one player input. It appends the results (the player's selection and the correct answer) to an object that will get stored and used for generating the final results when the time interval expires. This will get passed to a function that handles saving things to the leaderboard.
 
-// The leaderboard will need:
-// player initials
-// player correct answers out of total questions asked
-// time interval the player set
-// difficulty level player set
-// the question will be: how to rank the leaderboard? Maybe start with just the percent of the score for now.
-// const player = {
-//   type: "multiplication",
-//   time: "60",
-//   difficulty: "easy",
-//   totalProblems: "10",
-//   totalCorrect: "9",
-//   sumScore: "9/10",
-//   percent: "90%",
-//   date: "8/17/2025",
-//   initials: "JRS",
-// };
 // handle revealing the user params form and hiding the start test button
 readyButton.addEventListener(
   "click",
   () => {
+    getTimer.hidden = true;
     getParamsForm.hidden = false;
     readyButton.hidden = true;
   }
@@ -190,3 +312,22 @@ next1.addEventListener("click", (e) => {
 getParamsForm.addEventListener("submit", initQuiz);
 
 quiz.addEventListener("submit", processPlayerInput);
+
+resetBtn.addEventListener("click", () => {
+  window.location.reload();
+});
+
+getSaveForm.addEventListener("submit", savePlayer);
+
+// request.onupgradeneeded = (event) => {
+//   db = event.target.result;
+//   const objectStore = db.createObjectStore("players", {
+//     keyPath: "_id",
+//     autoIncrement: true,
+//   });
+//   objectStore.createIndex("_id", "_id", { unique: true });
+//   request.onsuccess = (event) => {
+//     db = event.target.result;
+//   };
+// };
+// openIndexedDB("playerDB", 1, "playerStore");

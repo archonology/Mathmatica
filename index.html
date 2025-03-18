@@ -7,23 +7,23 @@
     <title>Math Wizards</title>
   </head>
   <header>
-    <h1>Math Wizards</h1>
+    <h1>Mathmatic</h1>
   </header>
   <body>
     <!-- render a form once selected that shows one prompt for input at a time to get timer and difficulty preferences from user -->
-    <button id="startBtn">Start a Math Quiz</button>
+    <button id="startBtn">Player Start</button>
     <br />
     <form id="paramsForm" hidden>
       <div id="q1">
         <p>Select your time limit:</p>
         <input type="radio" id="time1" name="timeSelect" value="10" />
         <label for="time1">1 Min</label><br />
-        <input type="radio" id="time2" name="timeSelect" value="120" />
+        <input type="radio" id="time2" name="timeSelect" value="15" />
         <label for="time2">2 Min</label><br />
-        <input type="radio" id="time3" name="timeSelect" value="180" />
+        <input type="radio" id="time3" name="timeSelect" value="20" />
         <label for="time3">3 Min</label>
         <br />
-        <button id="next1">Next</button>
+        <button id="next1" class="minorBtn">Next</button>
       </div>
       <div id="q2" hidden>
         <p>Select difficulty level:</p>
@@ -34,21 +34,32 @@
         <input type="radio" id="hard" name="levelSelect" value="3" />
         <label for="hard">Hard</label>
         <br />
-        <button id="startTest" type="submit">Build Quiz</button>
+        <button id="startTest" type="submit" class="minorBtn">
+          Start Quiz
+        </button>
       </div>
     </form>
-    <button id="runQuiz" hidden>Start Quiz</button>
+    <!-- <button id="runQuiz" hidden>Start Quiz</button> -->
     <form id="quizForm" hidden>
       <label for="answer" id="ansLabel"></label>
       <br />
       <input type="text" id="answer" />
       <br />
-      <button type="submit" id="next3">Next</button>
+      <button type="submit" id="next3" class="minorBtn">Next</button>
     </form>
     <p id="timerText" hidden></p>
+    <br />
+    <form id="savePlayer" hidden>
+      <label for="playerInitials" id="initialsLabel">Enter Initials</label>
+      <br />
+      <input type="text" id="playerInitials" placeholder="AAK" />
+      <br />
+      <button type="submit" id="next4" class="minorBtn">Save</button>
+    </form>
+    <button id="resetBtn" class="minorBtn">Reset</button>
     <!-- render a show leaderboard button with JS: toggle it to "Hide Leaderboard" on click and to reveal the leaderboard saved in indexDB -->
     <!-- <button>Show Leaderboard</button> -->
-    <!-- <script src="./scripts/leaderboard.js"></script> -->
+    <script src="./scripts/leaderboard.js"></script>
     <script src="./scripts/script.js"></script>
   </body>
   <footer></footer>
