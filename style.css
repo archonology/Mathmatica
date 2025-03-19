@@ -1,16 +1,18 @@
-html {
-  background-color: #0c0d0e;
-  /* background-image: linear-gradient(#2a6ba1, rgb(65, 194, 123)); */
+/* html {
+  background-color: #10121a;
+  background-size: cover;
   height: 100%;
-}
+} */
 body {
-  color: floralwhite;
+  background-color: #10121a;
+  color: antiquewhite;
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
 }
 
 h1 {
   font-size: 52px;
+  padding: 1em;
 }
 
 button {
@@ -43,18 +45,29 @@ form {
 #quiz {
   font-size: 56px;
 }
-
-#answer {
-  padding: 0.1em;
-  border: 1px solid white;
+#ansLabel {
+  padding: 1rem;
+  padding-top: 0;
+  font-size: 108px;
+}
+#answer,
+#playerInitials {
+  padding: 0.5rem;
+  /* border: 1px solid white; */
   background-color: black;
   color: floralwhite;
   border-radius: 12px;
-  font-size: 38px;
+  font-size: 56px;
   font-weight: 600;
   text-align: center;
+  width: 350px;
+  height: 125px;
 }
-
+#initialsLabel {
+  padding: 1rem;
+  padding-top: 0;
+  font-size: 36px;
+}
 #timerText {
   font-size: 48px;
   margin: 0.5em;
@@ -68,6 +81,15 @@ form {
   font-size: 20px;
   font-weight: 600;
   box-shadow: -8px 4px;
+}
+
+#leaderBtn {
+  float: left;
+  position: fixed;
+  padding: 16px;
+}
+
+footer {
 }
 
 button:hover {

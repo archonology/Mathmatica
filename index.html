@@ -3,11 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="./style.css" />
-    <title>Math Wizards</title>
+    <title>Mathmatica</title>
   </head>
   <header>
-    <h1>Mathmatic</h1>
+    <h1>Mathmatica</h1>
   </header>
   <body>
     <!-- render a form once selected that shows one prompt for input at a time to get timer and difficulty preferences from user -->
@@ -27,12 +33,50 @@
       </div>
       <div id="q2" hidden>
         <p>Select difficulty level:</p>
-        <input type="radio" id="easy" name="levelSelect" value="1" />
+        <!-- <input type="radio" id="easy" name="levelSelect" value="1" />
         <label for="easy">Easy</label><br />
         <input type="radio" id="medium" name="levelSelect" value="2" />
         <label for="medium">Medium</label><br />
         <input type="radio" id="hard" name="levelSelect" value="3" />
-        <label for="hard">Hard</label>
+        <label for="hard">Hard</label> -->
+        <!-- bootstrap -->
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="Difficulty radio toggle button group"
+        >
+          <input
+            type="radio"
+            class="btn-check"
+            name="levelSelect"
+            id="easy"
+            value="1"
+            autocomplete="off"
+            checked
+          />
+          <label class="btn btn-success" for="easy">Easy</label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="levelSelect"
+            id="medium"
+            value="2"
+            autocomplete="off"
+          />
+          <label class="btn btn-warning" for="medium">Medium</label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="levelSelect"
+            id="hard"
+            value="3"
+            autocomplete="off"
+          />
+          <label class="btn btn-danger" for="hard">Hard</label>
+        </div>
+
         <br />
         <button id="startTest" type="submit" class="minorBtn">
           Start Quiz
@@ -43,7 +87,7 @@
     <form id="quizForm" hidden>
       <label for="answer" id="ansLabel"></label>
       <br />
-      <input type="text" id="answer" />
+      <input type="text" id="answer" autocomplete="off" />
       <br />
       <button type="submit" id="next3" class="minorBtn">Next</button>
     </form>
@@ -58,8 +102,15 @@
     </form>
     <button id="resetBtn" class="minorBtn" hidden>Reset</button>
     <br />
-    <button id="leaderBtn" class="minorBtn">Hide Leaderboard</button>
+    <!-- <button id="leaderBtn" class="minorBtn">Hide Leaderboard</button> -->
     <script src="./scripts/script.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
   </body>
-  <footer></footer>
+  <footer>
+    <p>Made with ❤️ by MeherDevs 2025</p>
+  </footer>
 </html>

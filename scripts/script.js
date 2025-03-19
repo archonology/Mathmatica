@@ -205,7 +205,7 @@ function initQuiz(e) {
   getForm.hidden = false;
   getTimer.hidden = false;
   getAnsBox.focus = true;
-  leadBtn.hidden = true;
+  // leadBtn.hidden = true;
   runQs();
   startInterval();
 }
@@ -248,6 +248,7 @@ function savePlayer(e) {
   );
   console.log(newPlayer);
   saveToDB(newPlayer);
+  getSaveForm.hidden = true;
 }
 
 function formatDifficulty() {
@@ -291,14 +292,14 @@ function processPlayerInput(e) {
   runQs();
 }
 
-function toggleLeader() {
-  leadBtn.textContent === "Show Leaderboard"
-    ? (leadBtn.textContent = "Hide Leaderboard")
-    : (leadBtn.textContent = "Show Leaderboard");
-}
+// function toggleLeader() {
+//   leadBtn.textContent === "Show Leaderboard"
+//     ? (leadBtn.textContent = "Hide Leaderboard")
+//     : (leadBtn.textContent = "Show Leaderboard");
+// }
 
 // listen for the leaderboard button click
-leadBtn.addEventListener("click", toggleLeader);
+// leadBtn.addEventListener("click", toggleLeader);
 
 //the time interval function gets called in a function that creates a form element that consists of one math question with one player input. It appends the results (the player's selection and the correct answer) to an object that will get stored and used for generating the final results when the time interval expires. This will get passed to a function that handles saving things to the leaderboard.
 
