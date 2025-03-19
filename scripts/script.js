@@ -36,6 +36,7 @@ const answerInput = document.getElementById("answer");
 const getForm = document.getElementById("quizForm");
 const getAnsBox = document.getElementById("answer");
 const getTimer = document.getElementById("timerText");
+const getResultText = document.getElementById("resultText");
 const resetBtn = document.getElementById("resetBtn");
 const getSaveForm = document.getElementById("savePlayer");
 // global objects
@@ -219,12 +220,11 @@ function printSummary() {
   }
   scorePercent = (playerScore / (correctAnswers.length - 1)) * 100;
   scorePercent = scorePercent.toFixed(2);
-  getTimer.textContent = `Time's up!
-        You  got ${playerScore}/${
-    correctAnswers.length - 1
-  }(${scorePercent}%) correct!`;
+  getTimer.textContent = "❌";
+  getResultText.textContent = `600pts earned`;
+  getParamsForm.hidden = true;
+  quiz.hidden = true;
   getSaveForm.hidden = false;
-  // reveal a hidden html reset button that reloads the page (thus test)
 }
 
 function savePlayer(e) {
@@ -250,6 +250,7 @@ function savePlayer(e) {
   console.log(newPlayer);
   saveToDB(newPlayer);
   getSaveForm.hidden = true;
+  getTimer.hidden = true;
 }
 
 function formatDifficulty() {
@@ -330,16 +331,3 @@ resetBtn.addEventListener("click", () => {
 });
 
 getSaveForm.addEventListener("submit", savePlayer);
-
-// request.onupgradeneeded = (event) => {
-//   db = event.target.result;
-//   const objectStore = db.createObjectStore("players", {
-//     keyPath: "_id",
-//     autoIncrement: true,
-//   });
-//   objectStore.createIndex("_id", "_id", { unique: true });
-//   request.onsuccess = (event) => {
-//     db = event.target.result;
-//   };
-// };
-// openIndexedDB("playerDB", 1, "playerStore");

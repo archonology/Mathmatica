@@ -1,8 +1,3 @@
-/* html {
-  background-color: #10121a;
-  background-size: cover;
-  height: 100%;
-} */
 body {
   background-color: #10121a;
   color: antiquewhite;
@@ -13,14 +8,15 @@ body {
 h1 {
   font-size: 52px;
   padding: 1em;
+  padding-bottom: 0.5em;
 }
 
 button {
   padding: 1em;
-  border: 1px solid white;
+  border: 2px solid white;
   background-color: rgb(26, 25, 25);
   color: floralwhite;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 23px;
   border-radius: 12px;
   box-shadow: -10px 3px floralwhite;
@@ -29,17 +25,29 @@ button {
 
 p {
   font-size: 18px;
-  font-weight: 700;
-}
-
-q1,
-q2 {
-  padding: 1em;
 }
 
 form {
   font-size: 26px;
   font-weight: 900;
+}
+.card-body {
+  display: flex;
+  justify-content: center;
+}
+
+#startBtn,
+#startTest {
+  background-color: #4e2e74;
+}
+
+#quizForm,
+#savePlayer {
+  border: 2px solid antiquewhite;
+  padding: 3rem;
+  max-width: 500px;
+  border-radius: 8px;
+  box-shadow: -10px 3px antiquewhite;
 }
 
 #quiz {
@@ -48,7 +56,7 @@ form {
 #ansLabel {
   padding: 1rem;
   padding-top: 0;
-  font-size: 108px;
+  font-size: 72px;
 }
 #answer,
 #playerInitials {
@@ -57,22 +65,27 @@ form {
   background-color: black;
   color: floralwhite;
   border-radius: 12px;
-  font-size: 56px;
+  font-size: 46px;
   font-weight: 600;
   text-align: center;
-  width: 350px;
-  height: 125px;
+  width: 250px;
+  height: 75px;
 }
 #initialsLabel {
   padding: 1rem;
   padding-top: 0;
-  font-size: 36px;
+  font-size: 28px;
 }
 #timerText {
-  font-size: 48px;
-  margin: 0.5em;
-  font-weight: 700;
-  font-family: monospace;
+  font-size: 28px;
+  position: fixed;
+  right: 30px;
+  top: 30px;
+  z-index: 1;
+}
+
+#resultText {
+  color: #ffc020;
 }
 
 .minorBtn {
@@ -80,20 +93,34 @@ form {
   margin-top: 1em;
   font-size: 20px;
   font-weight: 600;
-  box-shadow: -8px 4px;
+  box-shadow: -10px 3px floralwhite;
+}
+#resetBtn {
+  background-color: rgb(253, 70, 29);
+  color: black;
 }
 
-#leaderBtn {
-  float: left;
-  position: fixed;
-  padding: 16px;
+#startTest {
+  margin-top: 3rem;
 }
 
-footer {
+#next3,
+#next4 {
+  background-color: #1f8506;
+  width: 125px;
 }
-
+/* Events---------------------------------- */
 button:hover {
   cursor: pointer;
-  box-shadow: -8px 4px floralwhite;
+  box-shadow: -6px 1px antiquewhite;
   background-color: rgb(11, 11, 11);
+}
+
+#next3:hover {
+  background-color: #1c7307;
+  box-shadow: -6px 1px antiquewhite;
+}
+
+#quizForm::disabled {
+  opacity: 0;
 }
