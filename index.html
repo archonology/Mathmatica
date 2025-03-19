@@ -22,23 +22,48 @@
     <form id="paramsForm" hidden>
       <div id="q1">
         <p>Select your time limit:</p>
-        <input type="radio" id="time1" name="timeSelect" value="60" />
-        <label for="time1">1 Min</label><br />
-        <input type="radio" id="time2" name="timeSelect" value="120" />
-        <label for="time2">3 Min</label><br />
-        <input type="radio" id="time3" name="timeSelect" value="240" />
-        <label for="time3">6 Min</label>
+        <!-- Bootstrap component / values needs to be reset after development: 60/120/240 -->
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="Time select toggle button group"
+        >
+          <input
+            type="radio"
+            class="btn-check"
+            name="timeSelect"
+            id="time1"
+            value="10"
+            autocomplete="off"
+            checked
+          />
+          <label class="btn btn-outline-danger" for="time1">1 Min</label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="timeSelect"
+            id="time2"
+            value="10"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-warning" for="time2">2 Min</label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="timeSelect"
+            id="time3"
+            value="10"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-success" for="time3">3 Min</label>
+        </div>
         <br />
-        <button id="next1" class="minorBtn">Select Difficulty</button>
       </div>
-      <div id="q2" hidden>
+      <br />
+      <div id="q2">
         <p>Select difficulty level:</p>
-        <!-- <input type="radio" id="easy" name="levelSelect" value="1" />
-        <label for="easy">Easy</label><br />
-        <input type="radio" id="medium" name="levelSelect" value="2" />
-        <label for="medium">Medium</label><br />
-        <input type="radio" id="hard" name="levelSelect" value="3" />
-        <label for="hard">Hard</label> -->
         <!-- bootstrap -->
         <div
           class="btn-group"
@@ -54,7 +79,7 @@
             autocomplete="off"
             checked
           />
-          <label class="btn btn-success" for="easy">Easy</label>
+          <label class="btn btn-outline-success" for="easy">Easy</label>
 
           <input
             type="radio"
@@ -64,7 +89,7 @@
             value="2"
             autocomplete="off"
           />
-          <label class="btn btn-warning" for="medium">Medium</label>
+          <label class="btn btn-outline-warning" for="medium">Medium</label>
 
           <input
             type="radio"
@@ -74,7 +99,7 @@
             value="3"
             autocomplete="off"
           />
-          <label class="btn btn-danger" for="hard">Hard</label>
+          <label class="btn btn-outline-danger" for="hard">Hard</label>
         </div>
 
         <br />
@@ -111,6 +136,6 @@
     ></script>
   </body>
   <footer>
-    <p>Made with ❤️ by MeherDevs 2025</p>
+    <!-- <p>Made with ❤️ by MeherDevs 2025</p> -->
   </footer>
 </html>

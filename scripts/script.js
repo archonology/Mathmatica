@@ -187,6 +187,7 @@ function stopInterval() {
 
 function initQuiz(e) {
   e.preventDefault(e);
+  q1.hidden = true;
   q2.hidden = true;
   resetBtn.hidden = false;
   //Get player time select choice
@@ -314,11 +315,11 @@ readyButton.addEventListener(
   //   false
 );
 
-next1.addEventListener("click", (e) => {
-  e.preventDefault();
-  q1.hidden = true;
-  q2.hidden = false;
-});
+// next1.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   q1.hidden = true;
+//   q2.hidden = false;
+// });
 
 getParamsForm.addEventListener("submit", initQuiz);
 
