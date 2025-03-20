@@ -34,6 +34,7 @@ form {
 .card-body {
   display: flex;
   justify-content: center;
+  padding-top: 0;
 }
 
 #startBtn,
@@ -45,7 +46,8 @@ form {
 #savePlayer {
   border: 2px solid antiquewhite;
   padding: 3rem;
-  max-width: 500px;
+  /* max-width: 600px;
+  min-width: 425px; */
   border-radius: 8px;
   box-shadow: -10px 3px antiquewhite;
 }
@@ -84,16 +86,25 @@ form {
   z-index: 1;
 }
 
-#resultText {
-  color: #ffc020;
+#resultText1 {
+  color: antiquewhite;
+  font-weight: 600;
+  font-size: 77px;
+}
+#resultText2 {
+  color: #38e40e;
+  font-weight: 600;
+  font-size: 27px;
 }
 
 #correctAns {
   color: #38e40e;
+  font-size: 28px;
 }
 
 #wrongAns {
   color: #fd251d;
+  font-size: 28px;
 }
 
 .minorBtn {

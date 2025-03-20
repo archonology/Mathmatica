@@ -5,6 +5,7 @@ class Player {
     difficulty,
     totalProblems,
     totalCorrect,
+    points,
     date,
     initials,
     _id
@@ -14,6 +15,7 @@ class Player {
     this.difficulty = difficulty;
     this.totalProblems = totalProblems;
     this.totalCorrect = totalCorrect;
+    this.points = points;
     this.date = date;
     this.initials = initials;
     this._id = _id;
@@ -32,14 +34,19 @@ const answerInput = document.getElementById("answer");
 const getForm = document.getElementById("quizForm");
 const getAnsBox = document.getElementById("answer");
 const getTimer = document.getElementById("timerText");
-const getResultText = document.getElementById("resultText");
+const getResultText1 = document.getElementById("resultText1");
+const getResultText2 = document.getElementById("resultText2");
 const resetBtn = document.getElementById("resetBtn");
 const getSaveForm = document.getElementById("savePlayer");
-// global objects
+const correctPing = document.getElementById("correctAns");
+const wrongPing = document.getElementById("wrongAns");
+// global objects----------------------------------------
 const playerData = [];
 let correctAnswers = [];
 let playerAnswers = [];
 let playerScore = 0;
+let playerPoints = 0;
+let timeBonusPoints = 0;
 let scorePercent = 0.0;
 let intervalId;
 let count;
@@ -216,25 +223,41 @@ function printSummary() {
     if (playerData[1] === "1") {
       if (Number(playerAnswers[i]) === correctAnswers[i]) {
         playerScore++;
+        playerPoints++;
       }
     } else if (playerData[1] === "2") {
       if (Number(playerAnswers[i]) === correctAnswers[i]) {
-        playerScore = playerScore + 5;
+        playerPoints = playerPoints + 5;
+        playerScore++;
       }
     } else if (playerData[1] === "3") {
       if (Number(playerAnswers[i]) === correctAnswers[i]) {
-        playerScore = playerScore + 25;
+        playerPoints = playerPoints + 25;
+        playerScore++;
       }
     }
   }
+  // calculate time bonus
+  timeBonus();
   // scorePercent = (playerScore / (correctAnswers.length - 1)) * 100;
   // scorePercent = scorePercent.toFixed(2);
   getTimer.textContent = "❌";
-  getResultText.textContent = `Great Job!
-  ${playerScore}pts earned!`;
+  getResultText1.textContent = "Nice One!";
+  getResultText2.textContent = `  Time Bonus: ${timeBonusPoints}pts |
+  Total Points: ${playerPoints + timeBonusPoints}pts`;
   getParamsForm.hidden = true;
   quiz.hidden = true;
   getSaveForm.hidden = false;
+}
+
+function timeBonus() {
+  if (playerData[0] === "60") {
+    timeBonusPoints = playerScore * 5;
+  } else if (playerData[0] === "120") {
+    timeBonusPoints = playerScore * 3;
+  } else {
+    timeBonusPoints = playerScore;
+  }
 }
 
 function savePlayer(e) {
@@ -252,6 +275,7 @@ function savePlayer(e) {
     formattedDifficulty,
     correctAnswers.length - 1,
     playerScore,
+    playerPoints,
     formattedDate,
     newInitials
   );
@@ -297,10 +321,18 @@ function runQs() {
 
 function processPlayerInput(e) {
   e.preventDefault();
+  correctPing.textContent = "";
+  wrongPing.textContent = "";
   playerAnswers.push(e.target.answer.value);
   // display answer
-  if (playerAnswers[playerAnswers.length - 1] === correctAnswers[length - 1]) {
+  if (
+    Number(playerAnswers[playerAnswers.length - 1]) ===
+    correctAnswers[correctAnswers.length - 1]
+  ) {
     // targeted html element
+    correctPing.textContent = `${correctAnswers[correctAnswers.length - 1]}`;
+  } else {
+    wrongPing.textContent = `${correctAnswers[correctAnswers.length - 1]}`;
   }
   runQs();
 }
