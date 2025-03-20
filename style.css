@@ -31,6 +31,26 @@ form {
   font-size: 26px;
   font-weight: 900;
 }
+
+a {
+  color: whitesmoke;
+}
+
+a:hover {
+  color: lightskyblue;
+}
+
+a:focus {
+  color: lightskyblue;
+}
+
+footer {
+  bottom: 30px;
+  margin-top: 5em;
+  padding-bottom: 0.1em;
+  position: static;
+}
+
 .card-body {
   display: flex;
   justify-content: center;
@@ -128,6 +148,7 @@ form {
   background-color: #1f8506;
   width: 125px;
 }
+
 /* Events---------------------------------- */
 button:hover {
   cursor: pointer;
@@ -138,8 +159,4 @@ button:hover {
 #next3:hover {
   background-color: #1c7307;
   box-shadow: -6px 1px antiquewhite;
-}
-
-#quizForm::disabled {
-  opacity: 0;
 }
