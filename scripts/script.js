@@ -223,7 +223,7 @@ function printSummary() {
       }
     } else if (playerData[1] === "3") {
       if (Number(playerAnswers[i]) === correctAnswers[i]) {
-        playerScore = playerScore + 10;
+        playerScore = playerScore + 25;
       }
     }
   }
@@ -298,7 +298,10 @@ function runQs() {
 function processPlayerInput(e) {
   e.preventDefault();
   playerAnswers.push(e.target.answer.value);
-  // console.log(playerAnswers);
+  // display answer
+  if (playerAnswers[playerAnswers.length - 1] === correctAnswers[length - 1]) {
+    // targeted html element
+  }
   runQs();
 }
 
