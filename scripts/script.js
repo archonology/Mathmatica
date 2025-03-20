@@ -5,8 +5,6 @@ class Player {
     difficulty,
     totalProblems,
     totalCorrect,
-    sumScore,
-    percent,
     date,
     initials,
     _id
@@ -16,8 +14,6 @@ class Player {
     this.difficulty = difficulty;
     this.totalProblems = totalProblems;
     this.totalCorrect = totalCorrect;
-    this.sumScore = sumScore;
-    this.percent = percent;
     this.date = date;
     this.initials = initials;
     this._id = _id;
@@ -50,6 +46,26 @@ let count;
 const dbName = "playerDB";
 const storeName = "playerStore";
 
+// Time handling methods ------------------------
+function startInterval() {
+  intervalId = setInterval(() => {
+    count--;
+    getTimer.textContent = `🕒${count}`;
+    if (count === 0) {
+      stopInterval();
+    }
+  }, 1000);
+  return;
+}
+
+function stopInterval() {
+  clearInterval(intervalId);
+  count = null; // Now it works
+  getForm.hidden = true;
+  printSummary();
+}
+
+// ADD/SAVE handling methods ------------------------------
 async function saveObjectToIndexedDB(object) {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(dbName, 1);
@@ -100,7 +116,7 @@ async function saveObjectToLocalStorage(key, object) {
   });
 }
 
-// save to indexedDB and localStorage:
+// use save handling functions: ADD ------------------
 async function saveToDB(newPlayer) {
   try {
     const idbKey = await saveObjectToIndexedDB(newPlayer);
@@ -113,7 +129,7 @@ async function saveToDB(newPlayer) {
   }
 }
 
-//Retrieving from local storage.
+// GET handling functions ----------------------------
 function getObjectFromLocalStorage(key) {
   try {
     const item = localStorage.getItem(key);
@@ -124,7 +140,6 @@ function getObjectFromLocalStorage(key) {
   }
 }
 
-//Retrieving from indexedDB.
 async function getObjectFromIndexedDB(key) {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(dbName, 1);
@@ -155,7 +170,7 @@ async function getObjectFromIndexedDB(key) {
   });
 }
 
-// basic retrieve usage
+// use get handling functions: GET --------------------
 async function getLeaderboardData() {
   try {
     const retrievedLocalStorage = getObjectFromLocalStorage("lastPlayer");
@@ -167,25 +182,7 @@ async function getLeaderboardData() {
     console.error("Error retrieving: ", error);
   }
 }
-
-function startInterval() {
-  intervalId = setInterval(() => {
-    count--;
-    getTimer.textContent = `🕒${count}`;
-    if (count === 0) {
-      stopInterval();
-    }
-  }, 1000);
-  return;
-}
-
-function stopInterval() {
-  clearInterval(intervalId);
-  count = null; // Now it works
-  getForm.hidden = true;
-  printSummary();
-}
-
+// Initialize the Quiz --------------------------------
 function initQuiz(e) {
   e.preventDefault(e);
   q1.hidden = true;
@@ -207,21 +204,34 @@ function initQuiz(e) {
   getForm.hidden = false;
   getTimer.hidden = false;
   getAnsBox.focus = true;
-  // leadBtn.hidden = true;
+  // run the questions
   runQs();
+  // start the timer
   startInterval();
 }
 
+// Print Results --------------------------------------
 function printSummary() {
   for (let i = 0; i < playerAnswers.length; i++) {
-    if (Number(playerAnswers[i]) === correctAnswers[i]) {
-      playerScore++;
+    if (playerData[1] === "1") {
+      if (Number(playerAnswers[i]) === correctAnswers[i]) {
+        playerScore++;
+      }
+    } else if (playerData[1] === "2") {
+      if (Number(playerAnswers[i]) === correctAnswers[i]) {
+        playerScore = playerScore + 5;
+      }
+    } else if (playerData[1] === "3") {
+      if (Number(playerAnswers[i]) === correctAnswers[i]) {
+        playerScore = playerScore + 10;
+      }
     }
   }
-  scorePercent = (playerScore / (correctAnswers.length - 1)) * 100;
-  scorePercent = scorePercent.toFixed(2);
+  // scorePercent = (playerScore / (correctAnswers.length - 1)) * 100;
+  // scorePercent = scorePercent.toFixed(2);
   getTimer.textContent = "❌";
-  getResultText.textContent = `600pts earned`;
+  getResultText.textContent = `Great Job!
+  ${playerScore}pts earned!`;
   getParamsForm.hidden = true;
   quiz.hidden = true;
   getSaveForm.hidden = false;
@@ -242,8 +252,6 @@ function savePlayer(e) {
     formattedDifficulty,
     correctAnswers.length - 1,
     playerScore,
-    `${playerScore}/${correctAnswers.length - 1}`,
-    scorePercent,
     formattedDate,
     newInitials
   );
@@ -293,17 +301,6 @@ function processPlayerInput(e) {
   // console.log(playerAnswers);
   runQs();
 }
-
-// function toggleLeader() {
-//   leadBtn.textContent === "Show Leaderboard"
-//     ? (leadBtn.textContent = "Hide Leaderboard")
-//     : (leadBtn.textContent = "Show Leaderboard");
-// }
-
-// listen for the leaderboard button click
-// leadBtn.addEventListener("click", toggleLeader);
-
-//the time interval function gets called in a function that creates a form element that consists of one math question with one player input. It appends the results (the player's selection and the correct answer) to an object that will get stored and used for generating the final results when the time interval expires. This will get passed to a function that handles saving things to the leaderboard.
 
 // handle revealing the user params form and hiding the start test button
 readyButton.addEventListener(
