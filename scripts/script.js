@@ -253,7 +253,7 @@ function printSummary() {
 function timeBonus() {
   if (playerData[0] === "60") {
     timeBonusPoints = playerScore * 5;
-  } else if (playerData[0] === "120") {
+  } else if (playerData[0] === "180") {
     timeBonusPoints = playerScore * 3;
   } else {
     timeBonusPoints = playerScore;
