@@ -36,12 +36,9 @@ a {
   color: whitesmoke;
 }
 
-a:hover {
-  color: lightskyblue;
-}
-
-a:focus {
-  color: lightskyblue;
+th,
+td {
+  color: antiquewhite;
 }
 
 footer {
@@ -154,6 +151,14 @@ button:hover {
   cursor: pointer;
   box-shadow: -6px 1px antiquewhite;
   background-color: rgb(11, 11, 11);
+}
+
+a:hover {
+  color: lightskyblue;
+}
+
+a:focus {
+  color: lightskyblue;
 }
 
 #next3:hover {
