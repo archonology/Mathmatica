@@ -5,8 +5,7 @@ class Player {
     difficulty,
     totalProblems,
     totalCorrect,
-    sumScore,
-    percent,
+    points,
     date,
     initials,
     _id
@@ -16,8 +15,7 @@ class Player {
     this.difficulty = difficulty;
     this.totalProblems = totalProblems;
     this.totalCorrect = totalCorrect;
-    this.sumScore = sumScore;
-    this.percent = percent;
+    this.points = points;
     this.date = date;
     this.initials = initials;
     this._id = _id;
@@ -28,6 +26,7 @@ const readyButton = document.getElementById("startBtn");
 const getParamsForm = document.getElementById("paramsForm");
 const next1 = document.getElementById("next1");
 const quiz = document.getElementById("quizForm");
+const leadBtn = document.getElementById("leaderBtn");
 const getQuestion = document.getElementById("ansLabel");
 const q1 = document.getElementById("q1");
 const q2 = document.getElementById("q2");
@@ -35,26 +34,83 @@ const answerInput = document.getElementById("answer");
 const getForm = document.getElementById("quizForm");
 const getAnsBox = document.getElementById("answer");
 const getTimer = document.getElementById("timerText");
+const getResultText1 = document.getElementById("resultText1");
+const getResultText2 = document.getElementById("resultText2");
 const resetBtn = document.getElementById("resetBtn");
 const getSaveForm = document.getElementById("savePlayer");
-// leaderboard will be an array of player data objects each pushed at the end of a player test session.
-const leaderboard = [];
-// this will take some processing before info gets here or after to make sure the data is exactly what we want to print in the leaderboard.(ie. right now, player level is indicated numerically because that makes it easier to set the digits in the test, but we need it to print "easy" or "medium" etc. Seems best to use the numbers for setting up the test, and then process the data for the leaderboard return.)
+const correctPing = document.getElementById("correctAns");
+const wrongPing = document.getElementById("wrongAns");
+const tableBody = document.getElementById("appendScoresHere");
+// global objects----------------------------------------
 const playerData = [];
 let correctAnswers = [];
 let playerAnswers = [];
 let playerScore = 0;
+let playerPoints = 0;
+let timeBonusPoints = 0;
 let scorePercent = 0.0;
 let intervalId;
 let count;
-// IndexedDB Helper Functions
-
 const dbName = "playerDB";
 const storeName = "playerStore";
+// init data from DB
+// function init() {
+//   initializePlayerDB();
+// }
 
+// initDB function
+async function initializePlayerDB() {
+  return new Promise((resolve, reject) => {
+    // const dbName = "playerDB";
+    // const storeName = "playerStore";
+    const request = indexedDB.open(dbName, 2); // Version 2
+
+    request.onerror = (event) => {
+      console.error("IndexedDB error:", event);
+      reject(event.target.error);
+    };
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains(storeName)) {
+        db.createObjectStore(storeName, { autoIncrement: true });
+        console.log("playerDB and playerStore created.");
+      } else {
+        console.log("playerStore already exists.");
+      }
+    };
+
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      resolve(db); // Resolve with the database instance
+      getObjectFromIndexedDB();
+    };
+  });
+}
+
+// Time handling methods ------------------------
+function startInterval() {
+  intervalId = setInterval(() => {
+    count--;
+    getTimer.textContent = `🕒${count}`;
+    if (count === 0) {
+      stopInterval();
+    }
+  }, 1000);
+  return;
+}
+
+function stopInterval() {
+  clearInterval(intervalId);
+  count = null; // Now it works
+  getForm.hidden = true;
+  printSummary();
+}
+
+// ADD/SAVE handling methods ------------------------------
 async function saveObjectToIndexedDB(object) {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open(dbName, 1);
+    const request = indexedDB.open(dbName, 2);
 
     request.onerror = (event) => {
       console.error("IndexedDB error:", event);
@@ -102,7 +158,7 @@ async function saveObjectToLocalStorage(key, object) {
   });
 }
 
-// save to indexedDB and localStorage:
+// use save handling functions: ADD ------------------
 async function saveToDB(newPlayer) {
   try {
     const idbKey = await saveObjectToIndexedDB(newPlayer);
@@ -115,7 +171,7 @@ async function saveToDB(newPlayer) {
   }
 }
 
-//Retrieving from local storage.
+// GET handling functions ----------------------------
 function getObjectFromLocalStorage(key) {
   try {
     const item = localStorage.getItem(key);
@@ -126,10 +182,9 @@ function getObjectFromLocalStorage(key) {
   }
 }
 
-//Retrieving from indexedDB.
-async function getObjectFromIndexedDB(key) {
+async function getObjectFromIndexedDB() {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open(dbName, 1);
+    const request = indexedDB.open(dbName, 2);
     request.onerror = (event) => {
       console.error("IndexedDB error:", event);
       reject(event.target.error);
@@ -139,10 +194,13 @@ async function getObjectFromIndexedDB(key) {
       const db = event.target.result;
       const transaction = db.transaction([storeName], "readonly");
       const store = transaction.objectStore(storeName);
-      const getRequest = store.get(key);
+      const getRequest = store.getAll();
 
       getRequest.onsuccess = (event) => {
         resolve(event.target.result);
+        console.log(event.target.result);
+        createTableRows(event.target.result);
+        // createTableRows(playerData);
       };
 
       getRequest.onerror = (event) => {
@@ -156,46 +214,56 @@ async function getObjectFromIndexedDB(key) {
     };
   });
 }
+// Appending DB data to page on page load -------------
+function createTableRows(playerData) {
+  if (!tableBody) {
+    console.error("Table element with ID '" + tableElementId + "' not found.");
+    return;
+  }
+  // sort by highest points
+  playerData.sort((a, b) => b.points - a.points);
 
-// basic retrieve usage
+  for (let i = 0; i < playerData.length; i++) {
+    const obj = playerData[i];
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <th scope="row">${i + 1}</th>
+      <td>${obj.initials}</td>
+      <td>${obj.points}</td>
+      <td>${obj.type} | ${obj.time} | ${obj.difficulty}</td>
+      <td>${obj.date}</td>
+    `;
+
+    tableBody.appendChild(row);
+  }
+}
+
+// use get handling functions: GET --------------------
 async function getLeaderboardData() {
   try {
     const retrievedLocalStorage = getObjectFromLocalStorage("lastPlayer");
     console.log("Retrieved from local storage: ", retrievedLocalStorage);
 
-    const retrievedIndexedDB = await getObjectFromIndexedDB(1); //Assuming the first object saved had key 1.
+    const retrievedIndexedDB = await getObjectFromIndexedDB(); //Assuming the first object saved had key 1.
     console.log("Retrieved from IndexedDB: ", retrievedIndexedDB);
   } catch (error) {
     console.error("Error retrieving: ", error);
   }
 }
-
-function startInterval() {
-  intervalId = setInterval(() => {
-    count--;
-    getTimer.textContent = `🕒${count}`;
-    if (count === 0) {
-      stopInterval();
-    }
-  }, 1000);
-  return;
-}
-
-function stopInterval() {
-  clearInterval(intervalId);
-  count = null; // Now it works
-  getForm.hidden = true;
-  printSummary();
-}
-
+// Initialize the Quiz --------------------------------
 function initQuiz(e) {
   e.preventDefault(e);
+  q1.hidden = true;
   q2.hidden = true;
+  resetBtn.hidden = false;
+  //Get player time select choice
   for (let i = 0; i < e.target.timeSelect.length; i++) {
     if (e.target.timeSelect[i].checked === true) {
       playerData.push(e.target.timeSelect[i].value);
     }
   }
+  //Get player level select choice
   for (let i = 0; i < e.target.levelSelect.length; i++) {
     if (e.target.levelSelect[i].checked === true) {
       playerData.push(e.target.levelSelect[i].value);
@@ -205,48 +273,89 @@ function initQuiz(e) {
   getForm.hidden = false;
   getTimer.hidden = false;
   getAnsBox.focus = true;
+  // run the questions
   runQs();
+  // start the timer
   startInterval();
 }
 
+// Print Results --------------------------------------
 function printSummary() {
+  const resultTable = document.getElementById("results");
+
   for (let i = 0; i < playerAnswers.length; i++) {
-    if (Number(playerAnswers[i]) === correctAnswers[i]) {
-      playerScore++;
+    if (playerData[1] === "1") {
+      if (Number(playerAnswers[i]) === correctAnswers[i]) {
+        playerScore++;
+        playerPoints++;
+      }
+    } else if (playerData[1] === "2") {
+      if (Number(playerAnswers[i]) === correctAnswers[i]) {
+        playerPoints = playerPoints + 5;
+        playerScore++;
+      }
+    } else if (playerData[1] === "3") {
+      if (Number(playerAnswers[i]) === correctAnswers[i]) {
+        playerPoints = playerPoints + 25;
+        playerScore++;
+      }
     }
   }
-  scorePercent = (playerScore / (correctAnswers.length - 1)) * 100;
-  scorePercent = scorePercent.toFixed(2);
-  getTimer.textContent = `Time's up!
-        You  got ${playerScore}/${
-    correctAnswers.length - 1
-  }(${scorePercent}%) correct!`;
+  // calculate time bonus
+  timeBonus();
+  // scorePercent = (playerScore / (correctAnswers.length - 1)) * 100;
+  // scorePercent = scorePercent.toFixed(2);
+  getTimer.textContent = "❌";
+  let today = new Date();
+  let formattedDate = today.toLocaleDateString();
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <th scope="row" style="font-weight: 500; color: greenyellow">${playerPoints}</th>
+      <td style="font-size: 18px; font-weight: 500">multi | ${
+        playerData[0]
+      }s | ${formatDifficulty(playerData[1])}</td>
+      <td style="font-size: 18px; font-weight: 500">${formattedDate}</td>
+    `;
+
+  resultTable.appendChild(row);
+  // getResultText1.textContent = "Nice One!";
+  // getResultText2.textContent = `  Time Bonus: ${timeBonusPoints}pts |
+  // Total Points: ${playerPoints + timeBonusPoints}pts`;
+
+  getParamsForm.hidden = true;
+  quiz.hidden = true;
   getSaveForm.hidden = false;
-  // reveal a hidden html reset button that reloads the page (thus test)
+}
+
+function timeBonus() {
+  if (playerData[0] === "60") {
+    timeBonusPoints = playerScore * 5;
+  } else if (playerData[0] === "180") {
+    timeBonusPoints = playerScore * 3;
+  } else {
+    timeBonusPoints = playerScore;
+  }
 }
 
 function savePlayer(e) {
   e.preventDefault();
-  // console.log(e.target.playerInitials.value);
   let newInitials = e.target.playerInitials.value;
   let today = new Date();
   let formattedDate = today.toLocaleDateString();
   let formattedDifficulty = formatDifficulty();
-  console.log(formattedDifficulty);
   const newPlayer = new Player(
     // when I add new types of math tests, this will be dynamically rendered.
-    "multiplication",
+    "multi",
     `${playerData[0]}s`,
     formattedDifficulty,
     correctAnswers.length - 1,
     playerScore,
-    `${playerScore}/${correctAnswers.length - 1}`,
-    scorePercent,
+    playerPoints,
     formattedDate,
-    newInitials
+    newInitials.toUpperCase()
   );
-  console.log(newPlayer);
   saveToDB(newPlayer);
+  window.location.reload();
 }
 
 function formatDifficulty() {
@@ -285,28 +394,27 @@ function runQs() {
 
 function processPlayerInput(e) {
   e.preventDefault();
+  correctPing.textContent = "";
+  wrongPing.textContent = "";
   playerAnswers.push(e.target.answer.value);
-  // console.log(playerAnswers);
+  // display answer
+  if (
+    Number(playerAnswers[playerAnswers.length - 1]) ===
+    correctAnswers[correctAnswers.length - 1]
+  ) {
+    // targeted html element
+    correctPing.textContent = `${correctAnswers[correctAnswers.length - 1]}`;
+  } else {
+    wrongPing.textContent = `${correctAnswers[correctAnswers.length - 1]}`;
+  }
   runQs();
 }
 
-//the time interval function gets called in a function that creates a form element that consists of one math question with one player input. It appends the results (the player's selection and the correct answer) to an object that will get stored and used for generating the final results when the time interval expires. This will get passed to a function that handles saving things to the leaderboard.
-
 // handle revealing the user params form and hiding the start test button
-readyButton.addEventListener(
-  "click",
-  () => {
-    getTimer.hidden = true;
-    getParamsForm.hidden = false;
-    readyButton.hidden = true;
-  }
-  //   false
-);
-
-next1.addEventListener("click", (e) => {
-  e.preventDefault();
-  q1.hidden = true;
-  q2.hidden = false;
+readyButton.addEventListener("click", () => {
+  getTimer.hidden = true;
+  getParamsForm.hidden = false;
+  readyButton.hidden = true;
 });
 
 getParamsForm.addEventListener("submit", initQuiz);
@@ -319,15 +427,11 @@ resetBtn.addEventListener("click", () => {
 
 getSaveForm.addEventListener("submit", savePlayer);
 
-// request.onupgradeneeded = (event) => {
-//   db = event.target.result;
-//   const objectStore = db.createObjectStore("players", {
-//     keyPath: "_id",
-//     autoIncrement: true,
-//   });
-//   objectStore.createIndex("_id", "_id", { unique: true });
-//   request.onsuccess = (event) => {
-//     db = event.target.result;
-//   };
-// };
-// openIndexedDB("playerDB", 1, "playerStore");
+window.addEventListener("load", async () => {
+  try {
+    const db = await initializePlayerDB();
+    console.log("playerDB initialized:", db);
+  } catch (error) {
+    console.error("Error initializing playerDB:", error);
+  }
+});
