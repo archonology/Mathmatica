@@ -215,7 +215,7 @@ async function getObjectFromIndexedDB() {
         resolve(event.target.result);
         console.log(event.target.result);
         createTableRows(event.target.result);
-        // createTableRows(playerScores);
+        // createTableRows(playerData);
       };
 
       getRequest.onerror = (event) => {
@@ -230,14 +230,16 @@ async function getObjectFromIndexedDB() {
   });
 }
 // Appending DB data to page on page load -------------
-function createTableRows(playerScores) {
+function createTableRows(playerData) {
   if (!tableBody) {
     console.error("Table element with ID '" + tableElementId + "' not found.");
     return;
   }
+  // sort by highest points
+  playerData.sort((a, b) => b.points - a.points);
 
-  for (let i = 0; i < playerScores.length; i++) {
-    const obj = playerScores[i];
+  for (let i = 0; i < playerData.length; i++) {
+    const obj = playerData[i];
     const row = document.createElement("tr");
 
     row.innerHTML = `
@@ -257,7 +259,7 @@ function createTableRows(playerScores) {
 //   </tbody>
 // </table>
 
-// createTableRows(playerScores, "myTableBody"); // Call the function to populate the table
+// createTableRows(playerData, "myTableBody"); // Call the function to populate the table
 
 // use get handling functions: GET --------------------
 async function getLeaderboardData() {
