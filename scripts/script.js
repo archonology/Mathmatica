@@ -40,6 +40,7 @@ const resetBtn = document.getElementById("resetBtn");
 const getSaveForm = document.getElementById("savePlayer");
 const correctPing = document.getElementById("correctAns");
 const wrongPing = document.getElementById("wrongAns");
+const tableBody = document.getElementById("appendScoresHere");
 // global objects----------------------------------------
 const playerData = [];
 let correctAnswers = [];
@@ -52,7 +53,56 @@ let intervalId;
 let count;
 const dbName = "playerDB";
 const storeName = "playerStore";
+// init data from DB
+// function init() {
+//   initializePlayerDB();
+// }
 
+// initDB function
+async function initializePlayerDB() {
+  return new Promise((resolve, reject) => {
+    // const dbName = "playerDB";
+    // const storeName = "playerStore";
+    const request = indexedDB.open(dbName, 2); // Version 2
+
+    request.onerror = (event) => {
+      console.error("IndexedDB error:", event);
+      reject(event.target.error);
+    };
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains(storeName)) {
+        db.createObjectStore(storeName, { autoIncrement: true });
+        console.log("playerDB and playerStore created.");
+      } else {
+        console.log("playerStore already exists.");
+      }
+    };
+
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      resolve(db); // Resolve with the database instance
+      getObjectFromIndexedDB();
+    };
+  });
+}
+
+// Example usage on page load:
+window.addEventListener("load", async () => {
+  try {
+    const db = await initializePlayerDB();
+    console.log("playerDB initialized:", db);
+
+    // You can now use the 'db' instance to perform operations on playerStore
+    // Example:
+    // const transaction = db.transaction(['playerStore'], 'readwrite');
+    // const store = transaction.objectStore('playerStore');
+    // store.add({ playerName: 'John Doe', score: 100 });
+  } catch (error) {
+    console.error("Error initializing playerDB:", error);
+  }
+});
 // Time handling methods ------------------------
 function startInterval() {
   intervalId = setInterval(() => {
@@ -75,7 +125,7 @@ function stopInterval() {
 // ADD/SAVE handling methods ------------------------------
 async function saveObjectToIndexedDB(object) {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open(dbName, 1);
+    const request = indexedDB.open(dbName, 2);
 
     request.onerror = (event) => {
       console.error("IndexedDB error:", event);
@@ -147,9 +197,9 @@ function getObjectFromLocalStorage(key) {
   }
 }
 
-async function getObjectFromIndexedDB(key) {
+async function getObjectFromIndexedDB() {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open(dbName, 1);
+    const request = indexedDB.open(dbName, 2);
     request.onerror = (event) => {
       console.error("IndexedDB error:", event);
       reject(event.target.error);
@@ -159,10 +209,13 @@ async function getObjectFromIndexedDB(key) {
       const db = event.target.result;
       const transaction = db.transaction([storeName], "readonly");
       const store = transaction.objectStore(storeName);
-      const getRequest = store.get(key);
+      const getRequest = store.getAll();
 
       getRequest.onsuccess = (event) => {
         resolve(event.target.result);
+        console.log(event.target.result);
+        createTableRows(event.target.result);
+        // createTableRows(playerScores);
       };
 
       getRequest.onerror = (event) => {
@@ -176,6 +229,35 @@ async function getObjectFromIndexedDB(key) {
     };
   });
 }
+// Appending DB data to page on page load -------------
+function createTableRows(playerScores) {
+  if (!tableBody) {
+    console.error("Table element with ID '" + tableElementId + "' not found.");
+    return;
+  }
+
+  for (let i = 0; i < playerScores.length; i++) {
+    const obj = playerScores[i];
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <th scope="row">${i + 1}</th>
+      <td>${obj.initials}</td>
+      <td>${obj.points}pts</td>
+      <td>${obj.type} | ${obj.time} | ${obj.difficulty}</td>
+    `;
+
+    tableBody.appendChild(row);
+  }
+}
+
+// Assuming you have a table with id "myTableBody" in your HTML:
+// <table id="myTable">
+//   <tbody id="myTableBody">
+//   </tbody>
+// </table>
+
+// createTableRows(playerScores, "myTableBody"); // Call the function to populate the table
 
 // use get handling functions: GET --------------------
 async function getLeaderboardData() {
@@ -183,7 +265,7 @@ async function getLeaderboardData() {
     const retrievedLocalStorage = getObjectFromLocalStorage("lastPlayer");
     console.log("Retrieved from local storage: ", retrievedLocalStorage);
 
-    const retrievedIndexedDB = await getObjectFromIndexedDB(1); //Assuming the first object saved had key 1.
+    const retrievedIndexedDB = await getObjectFromIndexedDB(); //Assuming the first object saved had key 1.
     console.log("Retrieved from IndexedDB: ", retrievedIndexedDB);
   } catch (error) {
     console.error("Error retrieving: ", error);
@@ -363,3 +445,5 @@ resetBtn.addEventListener("click", () => {
 });
 
 getSaveForm.addEventListener("submit", savePlayer);
+
+// initializePlayerDB();
