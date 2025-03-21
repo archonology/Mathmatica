@@ -1,3 +1,6 @@
+html {
+  background-color: #10121a;
+}
 body {
   background-color: #10121a;
   color: antiquewhite;
@@ -15,11 +18,11 @@ button {
   padding: 1em;
   border: 2px solid white;
   background-color: rgb(26, 25, 25);
-  color: floralwhite;
+  color: #fffaf0;
   font-weight: 500;
   font-size: 23px;
   border-radius: 12px;
-  box-shadow: -10px 3px floralwhite;
+  box-shadow: -10px 3px #fffaf0;
   font-family: monospace;
 }
 
