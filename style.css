@@ -39,6 +39,7 @@ a {
 th,
 td {
   color: antiquewhite;
+  font-family: monospace;
 }
 
 footer {

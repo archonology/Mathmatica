@@ -135,8 +135,24 @@
     <br />
     <div class="card-body">
       <form id="savePlayer" hidden>
-        <p id="resultText1"></p>
-        <p id="resultText2"></p>
+        <!-- Hidden Form for rendering player results -->
+        <div class="container p-6">
+          <h2 style="color: greenyellow">Results:</h2>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Score</th>
+                <th scope="col">Stats</th>
+                <th scope="col">Date</th>
+              </tr>
+            </thead>
+            <tbody id="results">
+              <!-- append quiz results here -->
+            </tbody>
+          </table>
+        </div>
+        <!-- <p id="resultText1"></p>
+        <p id="resultText2"></p> -->
         <label for="playerInitials" id="initialsLabel">Enter Initials:</label>
         <br />
         <input
@@ -149,6 +165,7 @@
         <button type="submit" id="next4" class="minorBtn">Save</button>
       </form>
     </div>
+
     <button id="resetBtn" class="minorBtn" hidden>Reset Quiz</button>
     <br />
     <div class="container p-6">
@@ -161,28 +178,10 @@
             <th scope="col">Player</th>
             <th scope="col">Score</th>
             <th scope="col">Stats</th>
+            <th scope="col">Date</th>
           </tr>
         </thead>
-        <tbody id="appendScoresHere">
-          <!-- <tr>
-            <th scope="row">1</th>
-            <td>JRS</td>
-            <td>300pts</td>
-            <td>Multi | 3 min | Easy</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>RUM</td>
-            <td>200pts</td>
-            <td>Multi | 3 min | Easy</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>JRS</td>
-            <td>100pts</td>
-            <td>Multi | 6 min | Medium</td>
-          </tr> -->
-        </tbody>
+        <tbody id="appendScoresHere"></tbody>
       </table>
     </div>
     <!-- <button id="leaderBtn" class="minorBtn">Hide Leaderboard</button> -->

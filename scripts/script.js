@@ -88,21 +88,6 @@ async function initializePlayerDB() {
   });
 }
 
-// Example usage on page load:
-window.addEventListener("load", async () => {
-  try {
-    const db = await initializePlayerDB();
-    console.log("playerDB initialized:", db);
-
-    // You can now use the 'db' instance to perform operations on playerStore
-    // Example:
-    // const transaction = db.transaction(['playerStore'], 'readwrite');
-    // const store = transaction.objectStore('playerStore');
-    // store.add({ playerName: 'John Doe', score: 100 });
-  } catch (error) {
-    console.error("Error initializing playerDB:", error);
-  }
-});
 // Time handling methods ------------------------
 function startInterval() {
   intervalId = setInterval(() => {
@@ -245,21 +230,14 @@ function createTableRows(playerData) {
     row.innerHTML = `
       <th scope="row">${i + 1}</th>
       <td>${obj.initials}</td>
-      <td>${obj.points}pts</td>
+      <td>${obj.points}</td>
       <td>${obj.type} | ${obj.time} | ${obj.difficulty}</td>
+      <td>${obj.date}</td>
     `;
 
     tableBody.appendChild(row);
   }
 }
-
-// Assuming you have a table with id "myTableBody" in your HTML:
-// <table id="myTable">
-//   <tbody id="myTableBody">
-//   </tbody>
-// </table>
-
-// createTableRows(playerData, "myTableBody"); // Call the function to populate the table
 
 // use get handling functions: GET --------------------
 async function getLeaderboardData() {
@@ -303,6 +281,8 @@ function initQuiz(e) {
 
 // Print Results --------------------------------------
 function printSummary() {
+  const resultTable = document.getElementById("results");
+
   for (let i = 0; i < playerAnswers.length; i++) {
     if (playerData[1] === "1") {
       if (Number(playerAnswers[i]) === correctAnswers[i]) {
@@ -326,9 +306,22 @@ function printSummary() {
   // scorePercent = (playerScore / (correctAnswers.length - 1)) * 100;
   // scorePercent = scorePercent.toFixed(2);
   getTimer.textContent = "❌";
-  getResultText1.textContent = "Nice One!";
-  getResultText2.textContent = `  Time Bonus: ${timeBonusPoints}pts |
-  Total Points: ${playerPoints + timeBonusPoints}pts`;
+  let today = new Date();
+  let formattedDate = today.toLocaleDateString();
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <th scope="row" style="font-weight: 500; color: greenyellow">${playerPoints}</th>
+      <td style="font-size: 18px; font-weight: 500">multi | ${
+        playerData[0]
+      }s | ${formatDifficulty(playerData[1])}</td>
+      <td style="font-size: 18px; font-weight: 500">${formattedDate}</td>
+    `;
+
+  resultTable.appendChild(row);
+  // getResultText1.textContent = "Nice One!";
+  // getResultText2.textContent = `  Time Bonus: ${timeBonusPoints}pts |
+  // Total Points: ${playerPoints + timeBonusPoints}pts`;
+
   getParamsForm.hidden = true;
   quiz.hidden = true;
   getSaveForm.hidden = false;
@@ -346,27 +339,23 @@ function timeBonus() {
 
 function savePlayer(e) {
   e.preventDefault();
-  // console.log(e.target.playerInitials.value);
   let newInitials = e.target.playerInitials.value;
   let today = new Date();
   let formattedDate = today.toLocaleDateString();
   let formattedDifficulty = formatDifficulty();
-  console.log(formattedDifficulty);
   const newPlayer = new Player(
     // when I add new types of math tests, this will be dynamically rendered.
-    "multiplication",
+    "multi",
     `${playerData[0]}s`,
     formattedDifficulty,
     correctAnswers.length - 1,
     playerScore,
     playerPoints,
     formattedDate,
-    newInitials
+    newInitials.toUpperCase()
   );
-  console.log(newPlayer);
   saveToDB(newPlayer);
-  getSaveForm.hidden = true;
-  getTimer.hidden = true;
+  window.location.reload();
 }
 
 function formatDifficulty() {
@@ -422,21 +411,11 @@ function processPlayerInput(e) {
 }
 
 // handle revealing the user params form and hiding the start test button
-readyButton.addEventListener(
-  "click",
-  () => {
-    getTimer.hidden = true;
-    getParamsForm.hidden = false;
-    readyButton.hidden = true;
-  }
-  //   false
-);
-
-// next1.addEventListener("click", (e) => {
-//   e.preventDefault();
-//   q1.hidden = true;
-//   q2.hidden = false;
-// });
+readyButton.addEventListener("click", () => {
+  getTimer.hidden = true;
+  getParamsForm.hidden = false;
+  readyButton.hidden = true;
+});
 
 getParamsForm.addEventListener("submit", initQuiz);
 
@@ -448,4 +427,11 @@ resetBtn.addEventListener("click", () => {
 
 getSaveForm.addEventListener("submit", savePlayer);
 
-// initializePlayerDB();
+window.addEventListener("load", async () => {
+  try {
+    const db = await initializePlayerDB();
+    console.log("playerDB initialized:", db);
+  } catch (error) {
+    console.error("Error initializing playerDB:", error);
+  }
+});
