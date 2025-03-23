@@ -383,7 +383,41 @@ function multiplyPrintPush(x) {
   const correctAn = num1 * num2;
   getQuestion.textContent = `${num1} x ${num2} =`;
   correctAnswers.push(correctAn);
-  // console.log(correctAnswers);
+}
+
+function addPrintPush(x) {
+  let num1 = getNumber(x);
+  let num2 = getNumber(1);
+  const correctAn = num1 + num2;
+  getQuestion.textContent = `${num1} + ${num2} =`;
+  correctAnswers.push(correctAn);
+}
+
+function subtractPrintPush(x) {
+  let num1 = getNumber(x);
+  let num2 = getNumber(1);
+  let correctAn;
+  if (num1 > num2) {
+    correctAn = num1 - num2;
+    getQuestion.textContent = `${num1} - ${num2} =`;
+  } else {
+    correctAn = num2 - num1;
+    getQuestion.textContent = `${num2} - ${num1} =`;
+  }
+  correctAnswers.push(correctAn);
+}
+function dividePrintPush(x) {
+  let num1 = getNumber(x);
+  let num2 = getNumber(1);
+  let correctAn;
+  if (num1 > num2) {
+    correctAn = num1 / num2;
+    getQuestion.textContent = `${num1} / ${num2} =`;
+  } else {
+    correctAn = num2 / num1;
+    getQuestion.textContent = `${num2} / ${num1} =`;
+  }
+  correctAnswers.push(correctAn);
 }
 
 function runQs() {
