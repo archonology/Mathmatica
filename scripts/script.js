@@ -275,7 +275,6 @@ function initQuiz(e) {
       playerData.push(e.target.mathSelect[i].value);
     }
   }
-  console.log(playerData[2]);
   count = Number(playerData[0]);
   getForm.hidden = false;
   getTimer.hidden = false;
@@ -316,11 +315,12 @@ function printSummary() {
   let today = new Date();
   let formattedDate = today.toLocaleDateString();
   const row = document.createElement("tr");
+  [time, level, math] = playerData;
   row.innerHTML = `
     <th scope="row" style="font-weight: 500; color: greenyellow">${playerPoints}</th>
-      <td style="font-size: 18px; font-weight: 500">multi | ${
-        playerData[0]
-      }s | ${formatDifficulty(playerData[1])}</td>
+      <td style="font-size: 18px; font-weight: 500">${math} | ${time}s | ${formatDifficulty(
+    level
+  )}</td>
       <td style="font-size: 18px; font-weight: 500">${formattedDate}</td>
     `;
 
@@ -352,7 +352,7 @@ function savePlayer(e) {
   let formattedDifficulty = formatDifficulty();
   const newPlayer = new Player(
     // when I add new types of math tests, this will be dynamically rendered.
-    "multi",
+    playerData[2],
     `${playerData[0]}s`,
     formattedDifficulty,
     correctAnswers.length - 1,
@@ -413,7 +413,7 @@ function subtractPrintPush(x) {
   }
   correctAnswers.push(correctAn);
 }
-
+// this method offers the chance for floating point numbers, so check with user about if they want it included or if they want it to only return integers.
 function dividePrintPush(x) {
   let num1 = getNumber(x);
   let num2 = getNumber(1);
