@@ -369,7 +369,7 @@ function formatDifficulty() {
   }
   return formattedDifficulty;
 }
-
+// Maths ----------------------------------------------------------------------------------
 function getNumber(x) {
   const min = Math.pow(10, x - 1);
   const max = Math.pow(10, x) - 1;
@@ -406,6 +406,7 @@ function subtractPrintPush(x) {
   }
   correctAnswers.push(correctAn);
 }
+
 function dividePrintPush(x) {
   let num1 = getNumber(x);
   let num2 = getNumber(1);
@@ -419,13 +420,21 @@ function dividePrintPush(x) {
   }
   correctAnswers.push(correctAn);
 }
-
+// Run Maths -------------------------------------------------------------------------
 function runQs() {
   getAnsBox.value = "";
   getAnsBox.focus = true;
-  multiplyPrintPush(playerData[1]);
+  if (playerData[2] === "add") {
+    addPrintPush(playerData[1]);
+  } else if (playerData[2] === "subtract") {
+    subtractPrintPush(playerData[1]);
+  } else if (playerData[2] === "divide") {
+    dividePrintPush(playerData[1]);
+  } else {
+    multiplyPrintPush(playerData[1]);
+  }
 }
-
+// Answer checking ----------------------------------------------------------------------
 function processPlayerInput(e) {
   e.preventDefault();
   correctPing.textContent = "";
@@ -444,7 +453,7 @@ function processPlayerInput(e) {
   runQs();
 }
 
-// handle revealing the user params form and hiding the start test button
+// Listening ------------------------------------------------------------------------------
 readyButton.addEventListener("click", () => {
   getTimer.hidden = true;
   getParamsForm.hidden = false;
