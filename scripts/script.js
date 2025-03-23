@@ -269,6 +269,13 @@ function initQuiz(e) {
       playerData.push(e.target.levelSelect[i].value);
     }
   }
+  //Get player operator select choice
+  for (let i = 0; i < e.target.mathSelect.length; i++) {
+    if (e.target.mathSelect[i].checked === true) {
+      playerData.push(e.target.mathSelect[i].value);
+    }
+  }
+  console.log(playerData[2]);
   count = Number(playerData[0]);
   getForm.hidden = false;
   getTimer.hidden = false;
