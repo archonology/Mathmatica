@@ -379,7 +379,7 @@ function getNumber(x) {
 
 function multiplyPrintPush(x) {
   let num1 = getNumber(x);
-  let num2 = getNumber(x);
+  let num2 = getNumber(1);
   const correctAn = num1 * num2;
   getQuestion.textContent = `${num1} x ${num2} =`;
   correctAnswers.push(correctAn);
