@@ -288,26 +288,27 @@ function initQuiz(e) {
 // Print Results --------------------------------------
 function printSummary() {
   const resultTable = document.getElementById("results");
-
+  [time, level, math] = playerData;
+  // Calculate points based on difficulty level
   for (let i = 0; i < playerAnswers.length; i++) {
-    if (playerData[1] === "1") {
+    if (level === "1") {
       if (Number(playerAnswers[i]) === correctAnswers[i]) {
         playerScore++;
         playerPoints++;
       }
-    } else if (playerData[1] === "2") {
+    } else if (level === "2") {
       if (Number(playerAnswers[i]) === correctAnswers[i]) {
         playerPoints = playerPoints + 5;
         playerScore++;
       }
-    } else if (playerData[1] === "3") {
+    } else if (level === "3") {
       if (Number(playerAnswers[i]) === correctAnswers[i]) {
-        playerPoints = playerPoints + 25;
+        playerPoints = playerPoints + 10;
         playerScore++;
       }
     }
   }
-  // calculate time bonus
+  // calculate time bonus based on time amount selected
   timeBonus();
   // scorePercent = (playerScore / (correctAnswers.length - 1)) * 100;
   // scorePercent = scorePercent.toFixed(2);
@@ -315,7 +316,6 @@ function printSummary() {
   let today = new Date();
   let formattedDate = today.toLocaleDateString();
   const row = document.createElement("tr");
-  [time, level, math] = playerData;
   row.innerHTML = `
     <th scope="row" style="font-weight: 500; color: greenyellow">${playerPoints}</th>
       <td style="font-size: 18px; font-weight: 500">${math} | ${time}s | ${formatDifficulty(
@@ -325,10 +325,6 @@ function printSummary() {
     `;
 
   resultTable.appendChild(row);
-  // getResultText1.textContent = "Nice One!";
-  // getResultText2.textContent = `  Time Bonus: ${timeBonusPoints}pts |
-  // Total Points: ${playerPoints + timeBonusPoints}pts`;
-
   getParamsForm.hidden = true;
   quiz.hidden = true;
   getSaveForm.hidden = false;
