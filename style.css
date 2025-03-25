@@ -66,7 +66,8 @@ footer {
 #quizForm,
 #savePlayer {
   border: 2px solid antiquewhite;
-  padding: 3rem;
+  padding: 2rem;
+  padding-top: 1rem;
   /* max-width: 600px;
   min-width: 425px; */
   border-radius: 8px;
@@ -79,7 +80,9 @@ footer {
 #ansLabel {
   padding: 1rem;
   padding-top: 0;
-  font-size: 72px;
+  padding-left: 2em;
+  padding-right: 2em;
+  font-size: 56px;
 }
 #answer,
 #playerInitials {
@@ -135,6 +138,29 @@ footer {
   font-weight: 600;
   box-shadow: -10px 3px floralwhite;
 }
+
+.numPad {
+  margin: 5px;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  font-size: 20px;
+  font-weight: 600;
+  box-shadow: -5px 2px floralwhite;
+}
+
+.numPad:hover {
+  box-shadow: -1px 1px floralwhite;
+  background-color: #0358c7;
+}
+
+#numPadDel {
+  padding-left: 4.25rem;
+  padding-right: 4.25rem;
+}
+
+#numPadDel:hover {
+  background-color: #fd461d;
+}
 #resetBtn {
   background-color: #fd461d;
   color: black;
@@ -147,7 +173,9 @@ footer {
 #next3,
 #next4 {
   background-color: #1f8506;
-  width: 125px;
+  width: 11em;
+  height: 3em;
+  margin-bottom: 1em;
 }
 
 /* Events---------------------------------- */

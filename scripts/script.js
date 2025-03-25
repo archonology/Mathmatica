@@ -41,6 +41,17 @@ const getSaveForm = document.getElementById("savePlayer");
 const correctPing = document.getElementById("correctAns");
 const wrongPing = document.getElementById("wrongAns");
 const tableBody = document.getElementById("appendScoresHere");
+const numPad1 = document.getElementById("numPad1");
+const numPad2 = document.getElementById("numPad2");
+const numPad3 = document.getElementById("numPad3");
+const numPad4 = document.getElementById("numPad4");
+const numPad5 = document.getElementById("numPad5");
+const numPad6 = document.getElementById("numPad6");
+const numPad7 = document.getElementById("numPad7");
+const numPad8 = document.getElementById("numPad8");
+const numPad9 = document.getElementById("numPad9");
+const numPad0 = document.getElementById("numPad0");
+const numPadDel = document.getElementById("numPadDel");
 // global objects----------------------------------------
 const playerData = [];
 let correctAnswers = [];
@@ -269,6 +280,12 @@ function initQuiz(e) {
       playerData.push(e.target.levelSelect[i].value);
     }
   }
+  //Get player operator select choice
+  for (let i = 0; i < e.target.mathSelect.length; i++) {
+    if (e.target.mathSelect[i].checked === true) {
+      playerData.push(e.target.mathSelect[i].value);
+    }
+  }
   count = Number(playerData[0]);
   getForm.hidden = false;
   getTimer.hidden = false;
@@ -282,26 +299,27 @@ function initQuiz(e) {
 // Print Results --------------------------------------
 function printSummary() {
   const resultTable = document.getElementById("results");
-
+  [time, level, math] = playerData;
+  // Calculate points based on difficulty level
   for (let i = 0; i < playerAnswers.length; i++) {
-    if (playerData[1] === "1") {
+    if (level === "1") {
       if (Number(playerAnswers[i]) === correctAnswers[i]) {
         playerScore++;
         playerPoints++;
       }
-    } else if (playerData[1] === "2") {
+    } else if (level === "2") {
       if (Number(playerAnswers[i]) === correctAnswers[i]) {
         playerPoints = playerPoints + 5;
         playerScore++;
       }
-    } else if (playerData[1] === "3") {
+    } else if (level === "3") {
       if (Number(playerAnswers[i]) === correctAnswers[i]) {
-        playerPoints = playerPoints + 25;
+        playerPoints = playerPoints + 10;
         playerScore++;
       }
     }
   }
-  // calculate time bonus
+  // calculate time bonus based on time amount selected
   timeBonus();
   // scorePercent = (playerScore / (correctAnswers.length - 1)) * 100;
   // scorePercent = scorePercent.toFixed(2);
@@ -311,17 +329,13 @@ function printSummary() {
   const row = document.createElement("tr");
   row.innerHTML = `
     <th scope="row" style="font-weight: 500; color: greenyellow">${playerPoints}</th>
-      <td style="font-size: 18px; font-weight: 500">multi | ${
-        playerData[0]
-      }s | ${formatDifficulty(playerData[1])}</td>
+      <td style="font-size: 18px; font-weight: 500">${math} | ${time}s | ${formatDifficulty(
+    level
+  )}</td>
       <td style="font-size: 18px; font-weight: 500">${formattedDate}</td>
     `;
 
   resultTable.appendChild(row);
-  // getResultText1.textContent = "Nice One!";
-  // getResultText2.textContent = `  Time Bonus: ${timeBonusPoints}pts |
-  // Total Points: ${playerPoints + timeBonusPoints}pts`;
-
   getParamsForm.hidden = true;
   quiz.hidden = true;
   getSaveForm.hidden = false;
@@ -345,7 +359,7 @@ function savePlayer(e) {
   let formattedDifficulty = formatDifficulty();
   const newPlayer = new Player(
     // when I add new types of math tests, this will be dynamically rendered.
-    "multi",
+    playerData[2],
     `${playerData[0]}s`,
     formattedDifficulty,
     correctAnswers.length - 1,
@@ -369,7 +383,7 @@ function formatDifficulty() {
   }
   return formattedDifficulty;
 }
-
+// Maths ----------------------------------------------------------------------------------
 function getNumber(x) {
   const min = Math.pow(10, x - 1);
   const max = Math.pow(10, x) - 1;
@@ -406,6 +420,7 @@ function subtractPrintPush(x) {
   }
   correctAnswers.push(correctAn);
 }
+// this method offers the chance for floating point numbers, so check with user about if they want it included or if they want it to only return integers.
 function dividePrintPush(x) {
   let num1 = getNumber(x);
   let num2 = getNumber(1);
@@ -419,13 +434,22 @@ function dividePrintPush(x) {
   }
   correctAnswers.push(correctAn);
 }
-
+// Run Maths -------------------------------------------------------------------------
 function runQs() {
   getAnsBox.value = "";
   getAnsBox.focus = true;
-  multiplyPrintPush(playerData[1]);
+  runningNum = "";
+  if (playerData[2] === "add") {
+    addPrintPush(playerData[1]);
+  } else if (playerData[2] === "subtract") {
+    subtractPrintPush(playerData[1]);
+  } else if (playerData[2] === "divide") {
+    dividePrintPush(playerData[1]);
+  } else {
+    multiplyPrintPush(playerData[1]);
+  }
 }
-
+// Answer checking ----------------------------------------------------------------------
 function processPlayerInput(e) {
   e.preventDefault();
   correctPing.textContent = "";
@@ -444,7 +468,7 @@ function processPlayerInput(e) {
   runQs();
 }
 
-// handle revealing the user params form and hiding the start test button
+// Listening ------------------------------------------------------------------------------
 readyButton.addEventListener("click", () => {
   getTimer.hidden = true;
   getParamsForm.hidden = false;
@@ -468,4 +492,78 @@ window.addEventListener("load", async () => {
   } catch (error) {
     console.error("Error initializing playerDB:", error);
   }
+});
+
+let runningNum = "";
+
+numPad0.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "0";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad1.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "1";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad2.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "2";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad3.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "3";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad4.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "4";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad5.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "5";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad6.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "6";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad7.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "7";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad8.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "8";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad9.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "9";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPadDel.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (runningNum > 0) {
+    runningNum = runningNum.slice(0, -1);
+    console.log(runningNum);
+  } else {
+    runningNum = "";
+  }
+
+  answerInput.value = runningNum;
 });

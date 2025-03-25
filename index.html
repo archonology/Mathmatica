@@ -21,7 +21,7 @@
     <button id="startBtn">Setup Quiz</button>
     <br />
     <!-- Get Player Params Form-------------------------------------->
-    <form id="paramsForm" hidden aria-disabled="false">
+    <form id="paramsForm" hidden>
       <div id="q1">
         <p>Select your time limit:</p>
         <!-- Bootstrap component / values needs to be reset after development: 60/120/240 -->
@@ -103,8 +103,62 @@
           />
           <label class="btn btn-outline-danger" for="hard">Hard</label>
         </div>
-
         <br />
+        <div id="q3">
+          <p>Select Math Type:</p>
+          <!-- bootstrap -->
+          <div
+            class="btn-group"
+            role="group"
+            aria-label="Operator radio toggle button group"
+          >
+            <input
+              type="radio"
+              class="btn-check"
+              name="mathSelect"
+              id="add"
+              value="add"
+              autocomplete="off"
+              checked
+            />
+            <label class="btn btn-outline-primary" for="add">Add</label>
+
+            <input
+              type="radio"
+              class="btn-check"
+              name="mathSelect"
+              id="subtract"
+              value="subtract"
+              autocomplete="off"
+            />
+            <label class="btn btn-outline-primary" for="subtract"
+              >Subtract</label
+            >
+
+            <input
+              type="radio"
+              class="btn-check"
+              name="mathSelect"
+              id="multiply"
+              value="multiply"
+              autocomplete="off"
+            />
+            <label class="btn btn-outline-primary" for="multiply"
+              >Multiply</label
+            >
+            <input
+              type="radio"
+              class="btn-check"
+              name="mathSelect"
+              id="divide"
+              value="divide"
+              autocomplete="off"
+            />
+
+            <label class="btn btn-outline-primary" for="divide">Divide</label>
+          </div>
+          <br />
+        </div>
         <button id="startTest" type="submit" class="minorBtn">
           Start Quiz
         </button>
@@ -127,6 +181,33 @@
             </div>
             <div class="col">
               <p id="correctAns"></p>
+            </div>
+          </div>
+          <div class="row-md">
+            <div class="col">
+              <button class="numPad" id="numPad7" value="7">7</button>
+              <button class="numPad" id="numPad8" value="7">8</button>
+              <button class="numPad" id="numPad9" value="7">9</button>
+            </div>
+            <div class="row">
+              <div class="col">
+                <button class="numPad" id="numPad4" value="7">4</button>
+                <button class="numPad" id="numPad5" value="7">5</button>
+                <button class="numPad" id="numPad6" value="7">6</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <button class="numPad" id="numPad1" value="7">1</button>
+                <button class="numPad" id="numPad2" value="7">2</button>
+                <button class="numPad" id="numPad3" value="7">3</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <button class="numPad" id="numPad0" value="0">0</button>
+                <button class="numPad" id="numPadDel" value="del">del</button>
+              </div>
             </div>
           </div>
         </div>
