@@ -392,6 +392,7 @@ function getNumber(x) {
 }
 
 function multiplyPrintPush(x) {
+  // multiplication gets dramatiicaly more difficult if both numbers are set higher, so only one number is increased, unlike subtraction and addition.
   let num1 = getNumber(x);
   let num2 = getNumber(1);
   const correctAn = num1 * num2;
@@ -401,7 +402,7 @@ function multiplyPrintPush(x) {
 
 function addPrintPush(x) {
   let num1 = getNumber(x);
-  let num2 = getNumber(1);
+  let num2 = getNumber(x);
   const correctAn = num1 + num2;
   getQuestion.textContent = `${num1} + ${num2} =`;
   correctAnswers.push(correctAn);
@@ -409,7 +410,7 @@ function addPrintPush(x) {
 
 function subtractPrintPush(x) {
   let num1 = getNumber(x);
-  let num2 = getNumber(1);
+  let num2 = getNumber(x);
   let correctAn;
   if (num1 > num2) {
     correctAn = num1 - num2;
@@ -421,32 +422,52 @@ function subtractPrintPush(x) {
   correctAnswers.push(correctAn);
 }
 // this method offers the chance for floating point numbers, so check with user about if they want it included or if they want it to only return integers.
-function dividePrintPush(x) {
-  let num1 = getNumber(x);
-  let num2 = getNumber(1);
-  let correctAn;
+function dividePrintPush(num1, num2, sum) {
+  // let num1 = getNumber(x);
+  // let num2 = getNumber(1);
+  // let correctAn;
   if (num1 > num2) {
-    correctAn = num1 / num2;
+    // correctAn = num1 / num2;
     getQuestion.textContent = `${num1} / ${num2} =`;
   } else {
-    correctAn = num2 / num1;
+    // correctAn = num2 / num1;
     getQuestion.textContent = `${num2} / ${num1} =`;
   }
-  correctAnswers.push(correctAn);
+  correctAnswers.push(sum);
+}
+
+// only returns sums that are integers.
+function checkInteger(x) {
+  let num1 = getNumber(x);
+  let num2 = getNumber(1);
+  let sum = 0.0;
+  if (num1 > num2) {
+    sum = num1 / num2;
+  } else {
+    sum = num2 / num1;
+  }
+
+  if (Number.isInteger(sum)) {
+    dividePrintPush(num1, num2, sum);
+  } else {
+    checkInteger(x);
+  }
 }
 // Run Maths -------------------------------------------------------------------------
 function runQs() {
   getAnsBox.value = "";
   getAnsBox.focus = true;
   runningNum = "";
-  if (playerData[2] === "add") {
-    addPrintPush(playerData[1]);
-  } else if (playerData[2] === "subtract") {
-    subtractPrintPush(playerData[1]);
-  } else if (playerData[2] === "divide") {
-    dividePrintPush(playerData[1]);
+  [time, level, operator] = playerData;
+  if (operator === "add") {
+    addPrintPush(level);
+  } else if (operator === "subtract") {
+    subtractPrintPush(level);
+  } else if (operator === "divide") {
+    // this is for elementary students, so we aren't dealing with remainders/decimals
+    checkInteger(level);
   } else {
-    multiplyPrintPush(playerData[1]);
+    multiplyPrintPush(level);
   }
 }
 // Answer checking ----------------------------------------------------------------------
