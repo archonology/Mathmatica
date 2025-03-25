@@ -422,18 +422,36 @@ function subtractPrintPush(x) {
   correctAnswers.push(correctAn);
 }
 // this method offers the chance for floating point numbers, so check with user about if they want it included or if they want it to only return integers.
-function dividePrintPush(x) {
-  let num1 = getNumber(x);
-  let num2 = getNumber(1);
-  let correctAn;
+function dividePrintPush(num1, num2, sum) {
+  // let num1 = getNumber(x);
+  // let num2 = getNumber(1);
+  // let correctAn;
   if (num1 > num2) {
-    correctAn = num1 / num2;
+    // correctAn = num1 / num2;
     getQuestion.textContent = `${num1} / ${num2} =`;
   } else {
-    correctAn = num2 / num1;
+    // correctAn = num2 / num1;
     getQuestion.textContent = `${num2} / ${num1} =`;
   }
-  correctAnswers.push(correctAn);
+  correctAnswers.push(sum);
+}
+
+// only returns sums that are integers.
+function checkInteger(x) {
+  let num1 = getNumber(x);
+  let num2 = getNumber(1);
+  let sum = 0.0;
+  if (num1 > num2) {
+    sum = num1 / num2;
+  } else {
+    sum = num2 / num1;
+  }
+
+  if (Number.isInteger(sum)) {
+    dividePrintPush(num1, num2, sum);
+  } else {
+    checkInteger(x);
+  }
 }
 // Run Maths -------------------------------------------------------------------------
 function runQs() {
@@ -446,7 +464,8 @@ function runQs() {
   } else if (operator === "subtract") {
     subtractPrintPush(level);
   } else if (operator === "divide") {
-    dividePrintPush(level);
+    // this is for elementary students, so we aren't dealing with remainders/decimals
+    checkInteger(level);
   } else {
     multiplyPrintPush(level);
   }
