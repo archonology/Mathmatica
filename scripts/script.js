@@ -41,6 +41,17 @@ const getSaveForm = document.getElementById("savePlayer");
 const correctPing = document.getElementById("correctAns");
 const wrongPing = document.getElementById("wrongAns");
 const tableBody = document.getElementById("appendScoresHere");
+const numPad1 = document.getElementById("numPad1");
+const numPad2 = document.getElementById("numPad2");
+const numPad3 = document.getElementById("numPad3");
+const numPad4 = document.getElementById("numPad4");
+const numPad5 = document.getElementById("numPad5");
+const numPad6 = document.getElementById("numPad6");
+const numPad7 = document.getElementById("numPad7");
+const numPad8 = document.getElementById("numPad8");
+const numPad9 = document.getElementById("numPad9");
+const numPad0 = document.getElementById("numPad0");
+const numPadDel = document.getElementById("numPadDel");
 // global objects----------------------------------------
 const playerData = [];
 let correctAnswers = [];
@@ -427,6 +438,7 @@ function dividePrintPush(x) {
 function runQs() {
   getAnsBox.value = "";
   getAnsBox.focus = true;
+  runningNum = "";
   if (playerData[2] === "add") {
     addPrintPush(playerData[1]);
   } else if (playerData[2] === "subtract") {
@@ -480,4 +492,78 @@ window.addEventListener("load", async () => {
   } catch (error) {
     console.error("Error initializing playerDB:", error);
   }
+});
+
+let runningNum = "";
+
+numPad0.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "0";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad1.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "1";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad2.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "2";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad3.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "3";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad4.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "4";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad5.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "5";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad6.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "6";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad7.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "7";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad8.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "8";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPad9.addEventListener("click", (e) => {
+  e.preventDefault();
+  runningNum += "9";
+  console.log(runningNum);
+  answerInput.value = runningNum;
+});
+numPadDel.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (runningNum > 0) {
+    runningNum = runningNum.slice(0, -1);
+    console.log(runningNum);
+  } else {
+    runningNum = "";
+  }
+
+  answerInput.value = runningNum;
 });
