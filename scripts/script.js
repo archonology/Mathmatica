@@ -392,6 +392,7 @@ function getNumber(x) {
 }
 
 function multiplyPrintPush(x) {
+  // multiplication gets dramatiicaly more difficult if both numbers are set higher, so only one number is increased, unlike subtraction and addition.
   let num1 = getNumber(x);
   let num2 = getNumber(1);
   const correctAn = num1 * num2;
@@ -401,7 +402,7 @@ function multiplyPrintPush(x) {
 
 function addPrintPush(x) {
   let num1 = getNumber(x);
-  let num2 = getNumber(1);
+  let num2 = getNumber(x);
   const correctAn = num1 + num2;
   getQuestion.textContent = `${num1} + ${num2} =`;
   correctAnswers.push(correctAn);
@@ -409,7 +410,7 @@ function addPrintPush(x) {
 
 function subtractPrintPush(x) {
   let num1 = getNumber(x);
-  let num2 = getNumber(1);
+  let num2 = getNumber(x);
   let correctAn;
   if (num1 > num2) {
     correctAn = num1 - num2;
@@ -439,14 +440,15 @@ function runQs() {
   getAnsBox.value = "";
   getAnsBox.focus = true;
   runningNum = "";
-  if (playerData[2] === "add") {
-    addPrintPush(playerData[1]);
-  } else if (playerData[2] === "subtract") {
-    subtractPrintPush(playerData[1]);
-  } else if (playerData[2] === "divide") {
-    dividePrintPush(playerData[1]);
+  [time, level, operator] = playerData;
+  if (operator === "add") {
+    addPrintPush(level);
+  } else if (operator === "subtract") {
+    subtractPrintPush(level);
+  } else if (operator === "divide") {
+    dividePrintPush(level);
   } else {
-    multiplyPrintPush(playerData[1]);
+    multiplyPrintPush(level);
   }
 }
 // Answer checking ----------------------------------------------------------------------
