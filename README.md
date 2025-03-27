@@ -6,6 +6,10 @@ An application for generating custom math quiz and personal, local high score tr
 
 **By [Reed Meher](https://www.meherdevs.com)**
 
+### Visit Mathmatica:
+
+[https://archonology.github.io/math-wiz/](https://archonology.github.io/math-wiz/)
+
 ## Table of Contents:
 
 1. [About](#about)
