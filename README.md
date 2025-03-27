@@ -8,7 +8,7 @@ An application for generating custom math quiz and personal, local high score tr
 
 ### Visit Mathmatica:
 
-[https://archonology.github.io/math-wiz/](https://archonology.github.io/math-wiz/)
+[https://archonology.github.io/Mathmetica/](https://archonology.github.io/Mathmetica/)
 
 ## Table of Contents:
 
