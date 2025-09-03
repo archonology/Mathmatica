@@ -6,40 +6,47 @@
   --math_grey: #cfd5d6;
   --math_black: #2c2d2e;
   --math_glass: #cfd5d648;
+  --math_glass_shadow: #4041413a;
 }
-html {
-  background-color: #10121a;
-}
+
 body {
-  /* background-color: #10121a; */
-  background-image: radial-gradient(
+  /* background-image: radial-gradient(
     circle,
     var(--math_white) 30%,
     var(--math_azure_light),
     var(--math_azure_mid)
-  );
+  ); */
+  background-image: url("./assets/Mathematica_2_0.png");
   height: 100vh;
+  width: 100vw;
   color: var(--math_black);
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
 }
 
+header {
+  background-color: var(--math_white);
+  border-bottom: 7px solid var(--math_black);
+}
 h1 {
-  font-size: 52px;
-  padding: 1em;
-  padding-bottom: 0.5em;
+  font-size: 5svb;
+  padding: 2rem;
+  padding-bottom: 0.7rem;
+}
+
+header p {
+  font-family: monospace;
 }
 
 button {
+  margin-top: 3rem;
   padding: 1em;
-  border: 2px solid white;
-  background-color: rgb(26, 25, 25);
-  color: #fffaf0;
+  border: none;
+  background-color: var(--math_white);
   font-weight: 500;
   font-size: 23px;
-  border-radius: 12px;
-  box-shadow: -10px 3px #fffaf0;
-  font-family: monospace;
+  box-shadow: 10px 3px var(--math_black);
+  transition: 0.5s ease-in-out;
 }
 
 p {
@@ -58,6 +65,7 @@ a {
 th,
 td {
   font-family: monospace;
+  color: var(--math_white);
 }
 
 footer {
@@ -73,12 +81,12 @@ footer {
   padding-top: 0;
 }
 
-#startBtn,
-#startTest {
-  background-color: var(--math_glass);
+#startBtn {
   border-radius: 50%;
   height: 200px;
   width: 200px;
+  margin-top: 7rem;
+  margin-bottom: 13rem;
 }
 
 #quizForm,
@@ -90,6 +98,14 @@ footer {
   min-width: 425px; */
   border-radius: 8px;
   box-shadow: -10px 3px antiquewhite;
+}
+
+.score_box {
+  background-color: var(--math_black);
+  color: var(--math_white);
+  width: 100vw;
+  margin: 0;
+  padding: 3rem;
 }
 
 #quiz {
@@ -149,12 +165,16 @@ footer {
   font-size: 28px;
 }
 
-.minorBtn {
-  padding: 0.5em 1em 0.5em 1em;
+.minorBtn,
+#startTest {
+  padding: 2rem;
   margin-top: 1em;
   font-size: 20px;
   font-weight: 600;
-  box-shadow: -10px 3px floralwhite;
+  border-radius: none;
+  box-shadow: 10px 12px var(--math_black);
+  height: auto;
+  width: auto;
 }
 
 .numPad {
@@ -199,8 +219,11 @@ footer {
 /* Events---------------------------------- */
 button:hover {
   cursor: pointer;
-  box-shadow: -6px 1px antiquewhite;
-  background-color: rgb(11, 11, 11);
+  box-shadow: 6px 8px var(--math_black);
+}
+
+#startTest:hover {
+  box-shadow: 14px 16px var(--math_black);
 }
 
 a:hover {
