@@ -1,9 +1,25 @@
+:root {
+  --math_azure_dark: #113d7a;
+  --math_azure_mid: #2b86ba;
+  --math_azure_light: #58c3ea;
+  --math_white: #f2fcff;
+  --math_grey: #cfd5d6;
+  --math_black: #2c2d2e;
+  --math_glass: #cfd5d648;
+}
 html {
   background-color: #10121a;
 }
 body {
-  background-color: #10121a;
-  color: antiquewhite;
+  /* background-color: #10121a; */
+  background-image: radial-gradient(
+    circle,
+    var(--math_white) 30%,
+    var(--math_azure_light),
+    var(--math_azure_mid)
+  );
+  height: 100vh;
+  color: var(--math_black);
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
 }
@@ -36,12 +52,11 @@ form {
 }
 
 a {
-  color: whitesmoke;
+  color: var(--math_azure_dark);
 }
 
 th,
 td {
-  color: antiquewhite;
   font-family: monospace;
 }
 
@@ -60,7 +75,10 @@ footer {
 
 #startBtn,
 #startTest {
-  background-color: #4e2e74;
+  background-color: var(--math_glass);
+  border-radius: 50%;
+  height: 200px;
+  width: 200px;
 }
 
 #quizForm,
