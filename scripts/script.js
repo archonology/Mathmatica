@@ -242,7 +242,7 @@ function createTableRows(playerData) {
     row.innerHTML = `
       <th scope="row">${i + 1}</th>
       <td>${obj.initials}</td>
-      <td>${obj.points}</td>
+      <td style="color: #58c3ea">${obj.points}</td>
       <td>${obj.type} | ${obj.time} | ${obj.difficulty}</td>
       <td>${obj.date}</td>
     `;
@@ -330,11 +330,11 @@ function printSummary() {
   let formattedDate = today.toLocaleDateString();
   const row = document.createElement("tr");
   row.innerHTML = `
-    <th scope="row" style="font-weight: 500; color: greenyellow">${playerPoints}</th>
-      <td style="font-size: 18px; font-weight: 500">${math} | ${time}s | ${formatDifficulty(
+    <th scope="row" style="font-weight: 500; border-bottom: 0; color: #2c2d2e">${playerPoints}</th>
+      <td style="font-size: 18px; font-weight: 500; color: #2c2d2e"">${math} | ${time}s | ${formatDifficulty(
     level
   )}</td>
-      <td style="font-size: 18px; font-weight: 500">${formattedDate}</td>
+      <td style="font-size: 18px; font-weight: 500; color: #2c2d2e"">${formattedDate}</td>
     `;
 
   resultTable.appendChild(row);
@@ -485,9 +485,13 @@ function processPlayerInput(e) {
     correctAnswers[correctAnswers.length - 1]
   ) {
     // targeted html element
-    correctPing.textContent = `${correctAnswers[correctAnswers.length - 1]}`;
+    correctPing.textContent = `
+    😍✅
+    ${correctAnswers[correctAnswers.length - 1]}`;
   } else {
-    wrongPing.textContent = `${correctAnswers[correctAnswers.length - 1]}`;
+    wrongPing.textContent = `
+    🤔❌
+    ${correctAnswers[correctAnswers.length - 1]}`;
   }
   runQs();
 }

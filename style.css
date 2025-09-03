@@ -68,6 +68,10 @@ td {
   color: var(--math_white);
 }
 
+.resultTable th {
+  color: var(--math_black);
+}
+
 footer {
   bottom: 30px;
   padding-top: 2rem;
@@ -109,6 +113,7 @@ footer {
   padding-top: 1rem;
   border-radius: 8px;
   box-shadow: 12px 12px black;
+  margin-bottom: 5rem;
 }
 
 .score_box {
@@ -156,7 +161,6 @@ footer {
 }
 
 #resultText1 {
-  color: antiquewhite;
   font-weight: 600;
   font-size: 77px;
 }
