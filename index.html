@@ -14,156 +14,162 @@
   </head>
   <header>
     <h1>Mathmatica</h1>
+    <p>// Stay Math-Fit with Custom Math Quiz Reps! //</p>
     <p id="timerText" hidden></p>
+    <button id="resetBtn" hidden>Reset Quiz</button>
+    <br />
   </header>
   <body>
     <!-- render a form once selected that shows one prompt for input at a time to get timer and difficulty preferences from user -->
     <button id="startBtn">Setup Quiz</button>
     <br />
     <!-- Get Player Params Form-------------------------------------->
-    <form id="paramsForm" hidden>
-      <div id="q1">
-        <p>Select your time limit:</p>
-        <!-- Bootstrap component / values needs to be reset after development: 60/120/240 -->
-        <div
-          class="btn-group"
-          role="group"
-          aria-label="Time select toggle button group"
-        >
-          <input
-            type="radio"
-            class="btn-check"
-            name="timeSelect"
-            id="time1"
-            value="360"
-            autocomplete="off"
-            checked
-          />
-          <label class="btn btn-outline-success" for="time1">6 Min</label>
-
-          <input
-            type="radio"
-            class="btn-check"
-            name="timeSelect"
-            id="time2"
-            value="180"
-            autocomplete="off"
-          />
-          <label class="btn btn-outline-warning" for="time2">3 Min</label>
-
-          <input
-            type="radio"
-            class="btn-check"
-            name="timeSelect"
-            id="time3"
-            value="60"
-            autocomplete="off"
-          />
-          <label class="btn btn-outline-danger" for="time3">1 Min</label>
-        </div>
-        <br />
-      </div>
-      <br />
-      <div id="q2">
-        <p>Select difficulty level:</p>
-        <!-- bootstrap -->
-        <div
-          class="btn-group"
-          role="group"
-          aria-label="Difficulty radio toggle button group"
-        >
-          <input
-            type="radio"
-            class="btn-check"
-            name="levelSelect"
-            id="easy"
-            value="1"
-            autocomplete="off"
-            checked
-          />
-          <label class="btn btn-outline-success" for="easy">Easy</label>
-
-          <input
-            type="radio"
-            class="btn-check"
-            name="levelSelect"
-            id="medium"
-            value="2"
-            autocomplete="off"
-          />
-          <label class="btn btn-outline-warning" for="medium">Medium</label>
-
-          <input
-            type="radio"
-            class="btn-check"
-            name="levelSelect"
-            id="hard"
-            value="3"
-            autocomplete="off"
-          />
-          <label class="btn btn-outline-danger" for="hard">Hard</label>
-        </div>
-        <br />
-        <div id="q3">
-          <p>Select Math Type:</p>
-          <!-- bootstrap -->
+    <div id="param_box" hidden>
+      <form id="paramsForm" hidden>
+        <div id="q1">
+          <p>Select your time limit:</p>
+          <!-- Bootstrap component / values needs to be reset after development: 60/120/240 -->
           <div
             class="btn-group"
             role="group"
-            aria-label="Operator radio toggle button group"
+            aria-label="Time select toggle button group"
           >
             <input
               type="radio"
               class="btn-check"
-              name="mathSelect"
-              id="add"
-              value="add"
+              name="timeSelect"
+              id="time1"
+              value="360"
               autocomplete="off"
               checked
             />
-            <label class="btn btn-outline-primary" for="add">Add</label>
+            <label class="btn btn-outline-success" for="time1">6 Min</label>
 
             <input
               type="radio"
               class="btn-check"
-              name="mathSelect"
-              id="subtract"
-              value="subtract"
+              name="timeSelect"
+              id="time2"
+              value="180"
               autocomplete="off"
             />
-            <label class="btn btn-outline-primary" for="subtract"
-              >Subtract</label
-            >
+            <label class="btn btn-outline-warning" for="time2">3 Min</label>
 
             <input
               type="radio"
               class="btn-check"
-              name="mathSelect"
-              id="multiply"
-              value="multiply"
+              name="timeSelect"
+              id="time3"
+              value="60"
               autocomplete="off"
             />
-            <label class="btn btn-outline-primary" for="multiply"
-              >Multiply</label
-            >
-            <input
-              type="radio"
-              class="btn-check"
-              name="mathSelect"
-              id="divide"
-              value="divide"
-              autocomplete="off"
-            />
-
-            <label class="btn btn-outline-primary" for="divide">Divide</label>
+            <label class="btn btn-outline-danger" for="time3">1 Min</label>
           </div>
           <br />
         </div>
-        <button id="startTest" type="submit" class="minorBtn">
-          Start Quiz
-        </button>
-      </div>
-    </form>
+        <br />
+        <div id="q2">
+          <p>Select difficulty level:</p>
+          <!-- bootstrap -->
+          <div
+            class="btn-group"
+            role="group"
+            aria-label="Difficulty radio toggle button group"
+          >
+            <input
+              type="radio"
+              class="btn-check"
+              name="levelSelect"
+              id="easy"
+              value="1"
+              autocomplete="off"
+              checked
+            />
+            <label class="btn btn-outline-success" for="easy">Easy</label>
+
+            <input
+              type="radio"
+              class="btn-check"
+              name="levelSelect"
+              id="medium"
+              value="2"
+              autocomplete="off"
+            />
+            <label class="btn btn-outline-warning" for="medium">Medium</label>
+
+            <input
+              type="radio"
+              class="btn-check"
+              name="levelSelect"
+              id="hard"
+              value="3"
+              autocomplete="off"
+            />
+            <label class="btn btn-outline-danger" for="hard">Hard</label>
+          </div>
+          <br />
+          <div id="q3">
+            <br />
+            <p>Select Math Type:</p>
+            <!-- bootstrap -->
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="Operator radio toggle button group"
+            >
+              <input
+                type="radio"
+                class="btn-check"
+                name="mathSelect"
+                id="add"
+                value="add"
+                autocomplete="off"
+                checked
+              />
+              <label class="btn btn-outline-primary" for="add">Add</label>
+
+              <input
+                type="radio"
+                class="btn-check"
+                name="mathSelect"
+                id="subtract"
+                value="subtract"
+                autocomplete="off"
+              />
+              <label class="btn btn-outline-primary" for="subtract"
+                >Subtract</label
+              >
+
+              <input
+                type="radio"
+                class="btn-check"
+                name="mathSelect"
+                id="multiply"
+                value="multiply"
+                autocomplete="off"
+              />
+              <label class="btn btn-outline-primary" for="multiply"
+                >Multiply</label
+              >
+              <input
+                type="radio"
+                class="btn-check"
+                name="mathSelect"
+                id="divide"
+                value="divide"
+                autocomplete="off"
+              />
+
+              <label class="btn btn-outline-primary" for="divide">Divide</label>
+            </div>
+            <br />
+          </div>
+          <button id="startTest" type="submit" class="minorBtn">
+            Start Quiz!
+          </button>
+        </div>
+      </form>
+    </div>
     <!-- Quiz Form ------------------------------------------------>
     <div class="card-body">
       <form id="quizForm" hidden>
@@ -217,11 +223,11 @@
     <div class="card-body">
       <form id="savePlayer" hidden>
         <!-- Hidden Form for rendering player results -->
-        <div class="container p-6">
-          <h2 style="color: greenyellow">Results:</h2>
-          <table class="table">
+        <div class="container p-6" style="color: #2c2d2e">
+          <h2>Results:</h2>
+          <table class="table" style="border-style: none">
             <thead>
-              <tr>
+              <tr class="resultTable">
                 <th scope="col">Score</th>
                 <th scope="col">Stats</th>
                 <th scope="col">Date</th>
@@ -246,12 +252,8 @@
         <button type="submit" id="next4" class="minorBtn">Save</button>
       </form>
     </div>
-
-    <button id="resetBtn" class="minorBtn" hidden>Reset Quiz</button>
-    <br />
-    <div class="container p-6">
-      <hr />
-      <h2>HIGH SCORES</h2>
+    <div class="score_box">
+      <h2>High Scores</h2>
       <table class="table">
         <thead>
           <tr>

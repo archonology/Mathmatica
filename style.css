@@ -1,29 +1,52 @@
-html {
-  background-color: #10121a;
+:root {
+  --math_azure_dark: #113d7a;
+  --math_azure_mid: #2b86ba;
+  --math_azure_light: #58c3ea;
+  --math_white: #f2fcff;
+  --math_grey: #cfd5d6;
+  --math_black: #2c2d2e;
+  --math_glass: #cfd5d648;
+  --math_glass_shadow: #4041413a;
 }
+
 body {
-  background-color: #10121a;
-  color: antiquewhite;
+  /* background-image: radial-gradient(
+    circle,
+    var(--math_white) 30%,
+    var(--math_azure_light),
+    var(--math_azure_mid)
+  ); */
+  background-image: url("./assets/Mathematica_2_0.png");
+  height: 100vh;
+  width: 100vw;
+  color: var(--math_black);
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
 }
 
+header {
+  background-color: var(--math_white);
+  border-bottom: 7px solid var(--math_black);
+}
 h1 {
-  font-size: 52px;
-  padding: 1em;
-  padding-bottom: 0.5em;
+  font-size: 5svb;
+  padding: 2rem;
+  padding-bottom: 0.7rem;
+}
+
+header p {
+  font-family: monospace;
 }
 
 button {
+  margin-top: 3rem;
   padding: 1em;
-  border: 2px solid white;
-  background-color: rgb(26, 25, 25);
-  color: #fffaf0;
+  border: none;
+  background-color: var(--math_white);
   font-weight: 500;
   font-size: 23px;
-  border-radius: 12px;
-  box-shadow: -10px 3px #fffaf0;
-  font-family: monospace;
+  box-shadow: 10px 3px var(--math_black);
+  transition: 0.5s ease-in-out;
 }
 
 p {
@@ -36,20 +59,26 @@ form {
 }
 
 a {
-  color: whitesmoke;
+  color: var(--math_azure_light);
 }
 
 th,
 td {
-  color: antiquewhite;
   font-family: monospace;
+  color: var(--math_white);
+}
+
+.resultTable th {
+  color: var(--math_black);
 }
 
 footer {
   bottom: 30px;
-  margin-top: 5em;
-  padding-bottom: 0.1em;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
   position: static;
+  background-color: var(--math_black);
+  color: var(--math_white);
 }
 
 .card-body {
@@ -58,20 +87,41 @@ footer {
   padding-top: 0;
 }
 
-#startBtn,
-#startTest {
-  background-color: #4e2e74;
+#startBtn {
+  border-radius: 50%;
+  height: 200px;
+  width: 200px;
+  margin-top: 7rem;
+  margin-bottom: 13rem;
+}
+#param_box {
+  display: flex;
+  justify-content: center;
+}
+#paramsForm {
+  background-color: var(--math_black);
+  color: var(--math_white);
+  width: 390px;
+  padding: 3rem;
 }
 
 #quizForm,
 #savePlayer {
-  border: 2px solid antiquewhite;
+  border: 5px solid black;
+  background-color: var(--math_grey);
   padding: 2rem;
   padding-top: 1rem;
-  /* max-width: 600px;
-  min-width: 425px; */
   border-radius: 8px;
-  box-shadow: -10px 3px antiquewhite;
+  box-shadow: 12px 12px black;
+  margin-bottom: 5rem;
+}
+
+.score_box {
+  background-color: var(--math_black);
+  color: var(--math_white);
+  width: 100vw;
+  margin: 0;
+  padding: 3rem;
 }
 
 #quiz {
@@ -89,7 +139,7 @@ footer {
   padding: 0.5rem;
   /* border: 1px solid white; */
   background-color: black;
-  color: floralwhite;
+  color: var(--math_white);
   border-radius: 12px;
   font-size: 46px;
   font-weight: 600;
@@ -111,18 +161,17 @@ footer {
 }
 
 #resultText1 {
-  color: antiquewhite;
   font-weight: 600;
   font-size: 77px;
 }
 #resultText2 {
-  color: #38e40e;
+  color: #24a305;
   font-weight: 600;
   font-size: 27px;
 }
 
 #correctAns {
-  color: #38e40e;
+  color: #24a305;
   font-size: 28px;
 }
 
@@ -131,12 +180,22 @@ footer {
   font-size: 28px;
 }
 
-.minorBtn {
-  padding: 0.5em 1em 0.5em 1em;
+.minorBtn,
+#startTest {
+  /* padding: 2rem; */
   margin-top: 1em;
   font-size: 20px;
   font-weight: 600;
-  box-shadow: -10px 3px floralwhite;
+  border-radius: none;
+  box-shadow: 10px 12px var(--math_black);
+  height: auto;
+  width: auto;
+}
+
+#startTest {
+  background-color: #8fd853;
+  font-weight: 500;
+  box-shadow: 14px 9px black;
 }
 
 .numPad {
@@ -145,12 +204,13 @@ footer {
   padding-right: 2rem;
   font-size: 20px;
   font-weight: 600;
-  box-shadow: -5px 2px floralwhite;
+  box-shadow: none;
+  border: 2px solid black;
 }
 
 .numPad:hover {
-  box-shadow: -1px 1px floralwhite;
-  background-color: #0358c7;
+  background-color: #ffe100;
+  box-shadow: none;
 }
 
 #numPadDel {
@@ -164,6 +224,13 @@ footer {
 #resetBtn {
   background-color: #fd461d;
   color: black;
+  padding: 1rem;
+  float: right;
+  right: 30px;
+  font-weight: 500;
+  box-shadow: 14px 9px black;
+  z-index: 2;
+  position: fixed;
 }
 
 #startTest {
@@ -172,17 +239,27 @@ footer {
 
 #next3,
 #next4 {
-  background-color: #1f8506;
-  width: 11em;
-  height: 3em;
-  margin-bottom: 1em;
+  background-color: var(--math_azure_light);
+  width: 15rem;
+  margin-bottom: 1rem;
 }
 
+#next3 {
+  box-shadow: none;
+  border: 2px solid black;
+}
 /* Events---------------------------------- */
 button:hover {
   cursor: pointer;
-  box-shadow: -6px 1px antiquewhite;
-  background-color: rgb(11, 11, 11);
+  box-shadow: 6px 8px var(--math_black);
+}
+
+#startTest:hover,
+#resetBtn:hover {
+  box-shadow: -14px 9px black;
+  font-weight: 700;
+  color: black;
+  background-color: var(--math_azure_light);
 }
 
 a:hover {
@@ -194,6 +271,6 @@ a:focus {
 }
 
 #next3:hover {
-  background-color: #1c7307;
-  box-shadow: -6px 1px antiquewhite;
+  background-color: #ffe100;
+  box-shadow: none;
 }

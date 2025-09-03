@@ -23,6 +23,7 @@ class Player {
 }
 // html elements
 const readyButton = document.getElementById("startBtn");
+const getParamBox = document.getElementById("param_box");
 const getParamsForm = document.getElementById("paramsForm");
 const next1 = document.getElementById("next1");
 const quiz = document.getElementById("quizForm");
@@ -241,7 +242,7 @@ function createTableRows(playerData) {
     row.innerHTML = `
       <th scope="row">${i + 1}</th>
       <td>${obj.initials}</td>
-      <td>${obj.points}</td>
+      <td style="color: #58c3ea">${obj.points}</td>
       <td>${obj.type} | ${obj.time} | ${obj.difficulty}</td>
       <td>${obj.date}</td>
     `;
@@ -265,6 +266,7 @@ async function getLeaderboardData() {
 // Initialize the Quiz --------------------------------
 function initQuiz(e) {
   e.preventDefault(e);
+  getParamBox.hidden = true;
   q1.hidden = true;
   q2.hidden = true;
   resetBtn.hidden = false;
@@ -328,14 +330,15 @@ function printSummary() {
   let formattedDate = today.toLocaleDateString();
   const row = document.createElement("tr");
   row.innerHTML = `
-    <th scope="row" style="font-weight: 500; color: greenyellow">${playerPoints}</th>
-      <td style="font-size: 18px; font-weight: 500">${math} | ${time}s | ${formatDifficulty(
+    <th scope="row" style="font-weight: 500; border-bottom: 0; color: #2c2d2e">${playerPoints}</th>
+      <td style="font-size: 18px; font-weight: 500; color: #2c2d2e"">${math} | ${time}s | ${formatDifficulty(
     level
   )}</td>
-      <td style="font-size: 18px; font-weight: 500">${formattedDate}</td>
+      <td style="font-size: 18px; font-weight: 500; color: #2c2d2e"">${formattedDate}</td>
     `;
 
   resultTable.appendChild(row);
+  getParamBox.hidden = true;
   getParamsForm.hidden = true;
   quiz.hidden = true;
   getSaveForm.hidden = false;
@@ -482,9 +485,13 @@ function processPlayerInput(e) {
     correctAnswers[correctAnswers.length - 1]
   ) {
     // targeted html element
-    correctPing.textContent = `${correctAnswers[correctAnswers.length - 1]}`;
+    correctPing.textContent = `
+    😍✅
+    ${correctAnswers[correctAnswers.length - 1]}`;
   } else {
-    wrongPing.textContent = `${correctAnswers[correctAnswers.length - 1]}`;
+    wrongPing.textContent = `
+    🤔❌
+    ${correctAnswers[correctAnswers.length - 1]}`;
   }
   runQs();
 }
@@ -492,6 +499,7 @@ function processPlayerInput(e) {
 // Listening ------------------------------------------------------------------------------
 readyButton.addEventListener("click", () => {
   getTimer.hidden = true;
+  getParamBox.hidden = false;
   getParamsForm.hidden = false;
   readyButton.hidden = true;
 });
