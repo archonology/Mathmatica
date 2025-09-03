@@ -1,6 +1,6 @@
 const getRecord = document.querySelector(".rec");
 const recArm = document.getElementById("rec_arm");
-const record = new Audio("./assets/portBoomBap.mp3");
+const record = new Audio("./assets/SBJBeat.mp3");
 const scratch = new Audio("./assets/scratch.mp3");
 
 var playing = false;
