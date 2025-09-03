@@ -68,6 +68,31 @@ td {
   color: var(--math_white);
 }
 
+.recordBox {
+  position: fixed;
+  right: -6.2rem;
+  bottom: -10rem;
+  width: 500px;
+}
+
+#rec_arm {
+  position: relative;
+  z-index: 1;
+  bottom: -14rem;
+  /* right: -110%; */
+  /* scale: 60%; */
+  cursor: pointer;
+  /* transform: scaleX(-1); */
+  rotate: -110deg;
+  transition: 0.1s linear;
+}
+.rec {
+  z-index: -1;
+  position: static;
+  cursor: pointer;
+  transition: 0.5s ease-in-out;
+}
+
 .resultTable th {
   color: var(--math_black);
 }
@@ -273,4 +298,26 @@ a:focus {
 #next3:hover {
   background-color: #ffe100;
   box-shadow: none;
+}
+
+.rec:hover {
+  transform: scale(1.1) rotate(15deg);
+}
+
+/* This clicked class will be added/removed in script.js when the record is clicked. */
+.clicked {
+  animation: rotation 3s infinite linear;
+}
+
+.arm_click {
+  animation: 3s linear 1s infinite running slide-in;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
