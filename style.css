@@ -97,19 +97,18 @@ footer {
 #paramsForm {
   background-color: var(--math_black);
   color: var(--math_white);
-  width: 28svw;
+  width: 390px;
   padding: 3rem;
 }
 
 #quizForm,
 #savePlayer {
-  border: 2px solid antiquewhite;
+  border: 5px solid black;
+  background-color: var(--math_grey);
   padding: 2rem;
   padding-top: 1rem;
-  /* max-width: 600px;
-  min-width: 425px; */
   border-radius: 8px;
-  box-shadow: -10px 3px antiquewhite;
+  box-shadow: 12px 12px black;
 }
 
 .score_box {
@@ -135,7 +134,7 @@ footer {
   padding: 0.5rem;
   /* border: 1px solid white; */
   background-color: black;
-  color: floralwhite;
+  color: var(--math_white);
   border-radius: 12px;
   font-size: 46px;
   font-weight: 600;
@@ -162,13 +161,13 @@ footer {
   font-size: 77px;
 }
 #resultText2 {
-  color: #38e40e;
+  color: #24a305;
   font-weight: 600;
   font-size: 27px;
 }
 
 #correctAns {
-  color: #38e40e;
+  color: #24a305;
   font-size: 28px;
 }
 
@@ -179,7 +178,7 @@ footer {
 
 .minorBtn,
 #startTest {
-  padding: 2rem;
+  /* padding: 2rem; */
   margin-top: 1em;
   font-size: 20px;
   font-weight: 600;
@@ -189,18 +188,25 @@ footer {
   width: auto;
 }
 
+#startTest {
+  background-color: #8fd853;
+  font-weight: 500;
+  box-shadow: 14px 9px black;
+}
+
 .numPad {
   margin: 5px;
   padding-left: 2rem;
   padding-right: 2rem;
   font-size: 20px;
   font-weight: 600;
-  box-shadow: -5px 2px floralwhite;
+  box-shadow: none;
+  border: 2px solid black;
 }
 
 .numPad:hover {
-  box-shadow: -1px 1px floralwhite;
-  background-color: #0358c7;
+  background-color: #ffe100;
+  box-shadow: none;
 }
 
 #numPadDel {
@@ -214,6 +220,13 @@ footer {
 #resetBtn {
   background-color: #fd461d;
   color: black;
+  padding: 1rem;
+  float: right;
+  right: 30px;
+  font-weight: 500;
+  box-shadow: 14px 9px black;
+  z-index: 2;
+  position: fixed;
 }
 
 #startTest {
@@ -222,20 +235,27 @@ footer {
 
 #next3,
 #next4 {
-  background-color: #1f8506;
-  width: 11em;
-  height: 3em;
-  margin-bottom: 1em;
+  background-color: var(--math_azure_light);
+  width: 15rem;
+  margin-bottom: 1rem;
 }
 
+#next3 {
+  box-shadow: none;
+  border: 2px solid black;
+}
 /* Events---------------------------------- */
 button:hover {
   cursor: pointer;
   box-shadow: 6px 8px var(--math_black);
 }
 
-#startTest:hover {
-  box-shadow: 14px 16px var(--math_black);
+#startTest:hover,
+#resetBtn:hover {
+  box-shadow: -14px 9px black;
+  font-weight: 700;
+  color: black;
+  background-color: var(--math_azure_light);
 }
 
 a:hover {
@@ -247,6 +267,6 @@ a:focus {
 }
 
 #next3:hover {
-  background-color: #1c7307;
-  box-shadow: -6px 1px antiquewhite;
+  background-color: #ffe100;
+  box-shadow: none;
 }

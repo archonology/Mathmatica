@@ -23,6 +23,7 @@ class Player {
 }
 // html elements
 const readyButton = document.getElementById("startBtn");
+const getParamBox = document.getElementById("param_box");
 const getParamsForm = document.getElementById("paramsForm");
 const next1 = document.getElementById("next1");
 const quiz = document.getElementById("quizForm");
@@ -265,6 +266,7 @@ async function getLeaderboardData() {
 // Initialize the Quiz --------------------------------
 function initQuiz(e) {
   e.preventDefault(e);
+  getParamBox.hidden = true;
   q1.hidden = true;
   q2.hidden = true;
   resetBtn.hidden = false;
@@ -336,6 +338,7 @@ function printSummary() {
     `;
 
   resultTable.appendChild(row);
+  getParamBox.hidden = true;
   getParamsForm.hidden = true;
   quiz.hidden = true;
   getSaveForm.hidden = false;
@@ -492,6 +495,7 @@ function processPlayerInput(e) {
 // Listening ------------------------------------------------------------------------------
 readyButton.addEventListener("click", () => {
   getTimer.hidden = true;
+  getParamBox.hidden = false;
   getParamsForm.hidden = false;
   readyButton.hidden = true;
 });
