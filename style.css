@@ -59,7 +59,7 @@ form {
 }
 
 a {
-  color: var(--math_azure_dark);
+  color: var(--math_azure_light);
 }
 
 th,
@@ -70,9 +70,11 @@ td {
 
 footer {
   bottom: 30px;
-  margin-top: 5em;
-  padding-bottom: 0.1em;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
   position: static;
+  background-color: var(--math_black);
+  color: var(--math_white);
 }
 
 .card-body {
@@ -87,6 +89,16 @@ footer {
   width: 200px;
   margin-top: 7rem;
   margin-bottom: 13rem;
+}
+#param_box {
+  display: flex;
+  justify-content: center;
+}
+#paramsForm {
+  background-color: var(--math_black);
+  color: var(--math_white);
+  width: 28svw;
+  padding: 3rem;
 }
 
 #quizForm,
