@@ -86,9 +86,7 @@ async function initializePlayerDB() {
       const db = event.target.result;
       if (!db.objectStoreNames.contains(storeName)) {
         db.createObjectStore(storeName, { autoIncrement: true });
-        console.log("playerDB and playerStore created.");
       } else {
-        console.log("playerStore already exists.");
       }
     };
 
@@ -174,10 +172,7 @@ async function saveObjectToLocalStorage(key, object) {
 async function saveToDB(newPlayer) {
   try {
     const idbKey = await saveObjectToIndexedDB(newPlayer);
-    console.log("Object saved to IndexedDB with key:", idbKey);
-
     await saveObjectToLocalStorage("lastPlayer", newPlayer);
-    console.log("Object saved to localStorage");
   } catch (error) {
     console.error("Error:", error);
   }
@@ -210,7 +205,6 @@ async function getObjectFromIndexedDB() {
 
       getRequest.onsuccess = (event) => {
         resolve(event.target.result);
-        console.log(event.target.result);
         createTableRows(event.target.result);
         // createTableRows(playerData);
       };
@@ -255,10 +249,8 @@ function createTableRows(playerData) {
 async function getLeaderboardData() {
   try {
     const retrievedLocalStorage = getObjectFromLocalStorage("lastPlayer");
-    console.log("Retrieved from local storage: ", retrievedLocalStorage);
 
     const retrievedIndexedDB = await getObjectFromIndexedDB(); //Assuming the first object saved had key 1.
-    console.log("Retrieved from IndexedDB: ", retrievedIndexedDB);
   } catch (error) {
     console.error("Error retrieving: ", error);
   }
@@ -517,7 +509,6 @@ getSaveForm.addEventListener("submit", savePlayer);
 window.addEventListener("load", async () => {
   try {
     const db = await initializePlayerDB();
-    console.log("playerDB initialized:", db);
   } catch (error) {
     console.error("Error initializing playerDB:", error);
   }
@@ -525,71 +516,61 @@ window.addEventListener("load", async () => {
 
 let runningNum = "";
 
+// On-Screen number buttons ----------------------------------
 numPad0.addEventListener("click", (e) => {
   e.preventDefault();
   runningNum += "0";
-  console.log(runningNum);
   answerInput.value = runningNum;
 });
 numPad1.addEventListener("click", (e) => {
   e.preventDefault();
   runningNum += "1";
-  console.log(runningNum);
   answerInput.value = runningNum;
 });
 numPad2.addEventListener("click", (e) => {
   e.preventDefault();
   runningNum += "2";
-  console.log(runningNum);
   answerInput.value = runningNum;
 });
 numPad3.addEventListener("click", (e) => {
   e.preventDefault();
   runningNum += "3";
-  console.log(runningNum);
   answerInput.value = runningNum;
 });
 numPad4.addEventListener("click", (e) => {
   e.preventDefault();
   runningNum += "4";
-  console.log(runningNum);
   answerInput.value = runningNum;
 });
 numPad5.addEventListener("click", (e) => {
   e.preventDefault();
   runningNum += "5";
-  console.log(runningNum);
   answerInput.value = runningNum;
 });
 numPad6.addEventListener("click", (e) => {
   e.preventDefault();
   runningNum += "6";
-  console.log(runningNum);
   answerInput.value = runningNum;
 });
 numPad7.addEventListener("click", (e) => {
   e.preventDefault();
   runningNum += "7";
-  console.log(runningNum);
   answerInput.value = runningNum;
 });
 numPad8.addEventListener("click", (e) => {
   e.preventDefault();
   runningNum += "8";
-  console.log(runningNum);
   answerInput.value = runningNum;
 });
 numPad9.addEventListener("click", (e) => {
   e.preventDefault();
   runningNum += "9";
-  console.log(runningNum);
   answerInput.value = runningNum;
 });
 numPadDel.addEventListener("click", (e) => {
   e.preventDefault();
   if (runningNum > 0) {
     runningNum = runningNum.slice(0, -1);
-    console.log(runningNum);
   } else {
     runningNum = "";
   }

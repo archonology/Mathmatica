@@ -2,6 +2,9 @@
   --math_azure_dark: #113d7a;
   --math_azure_mid: #2b86ba;
   --math_azure_light: #58c3ea;
+  --math_azure_gold: #fcde4b;
+  --math_azure_red: #ff6943;
+  --math_azure_green: #45bb30;
   --math_white: #f2fcff;
   --math_grey: #cfd5d6;
   --math_black: #2c2d2e;
@@ -273,6 +276,66 @@ footer {
   box-shadow: none;
   border: 2px solid black;
 }
+/* BOOTSTRAP customizing-------------------- */
+.btn-radio-green {
+  border: 1px solid var(--math_azure_green);
+  color: var(--math_azure_green);
+  margin-right: 0.5rem;
+  border-radius: 5px;
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.btn-radio-yellow {
+  border: 1px solid var(--math_azure_gold);
+  color: var(--math_azure_gold);
+  margin-right: 0.5rem;
+  font-size: 18px;
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.btn-radio-red {
+  border: 1px solid var(--math_azure_red);
+  color: var(--math_azure_red);
+  /* margin-right: 5px; */
+  border-radius: 5px;
+  font-size: 18px;
+  padding: 1rem;
+}
+
+.btn-radio-blue {
+  border: 1px solid var(--math_azure_light);
+  color: var(--math_azure_light);
+  margin-right: 0.5rem;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 0.7rem;
+}
+
+/* Define checked state for custom buttons */
+.btn-check:checked + .btn-radio-green {
+  background-color: var(--math_azure_green);
+  color: black;
+  border: 1px solid var(--math_azure_green);
+}
+
+.btn-check:checked + .btn-radio-yellow {
+  background-color: var(--math_azure_gold);
+  color: black;
+  border: 1px solid var(--math_azure_gold);
+}
+
+.btn-check:checked + .btn-radio-red {
+  background-color: var(--math_azure_red);
+  color: black;
+  border: 1px solid var(--math_azure_red);
+}
+.btn-check:checked + .btn-radio-blue {
+  background-color: var(--math_azure_light);
+  color: black;
+  border: 1px solid var(--math_azure_light);
+}
 /* Events---------------------------------- */
 button:hover {
   cursor: pointer;
@@ -302,6 +365,20 @@ a:focus {
 
 .rec:hover {
   transform: scale(1.1) rotate(15deg);
+}
+
+.btn-radio-green:hover {
+  background-color: var(--math_azure_green);
+}
+.btn-radio-yellow:hover {
+  background-color: var(--math_azure_gold);
+}
+.btn-radio-red:hover {
+  background-color: var(--math_azure_red);
+}
+
+.btn-radio-blue:hover {
+  background-color: var(--math_azure_light);
 }
 
 /* This clicked class will be added/removed in script.js when the record is clicked. */
