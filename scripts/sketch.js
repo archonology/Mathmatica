@@ -69,6 +69,7 @@ openBtn.addEventListener("click", () => {
   // Resize the canvas to fit its container
   canvas.width = canvas.offsetWidth;
   canvas.height = canvas.offsetHeight;
+  openBtn.textContent = "Clear Sketch Pad";
 });
 
 closeBtn.addEventListener("click", () => {
