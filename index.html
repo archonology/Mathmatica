@@ -17,6 +17,15 @@
     <p>// Stay Math-Fit with Custom Math Quiz Reps! //</p>
     <p id="timerText" hidden></p>
     <button id="resetBtn" hidden>Reset Quiz</button>
+    <button id="open-window-btn" hidden>Open Sketch Pad</button>
+    <!-- Sketch button feature ---------------------------->
+    <div id="sketch-window" class="window hidden">
+      <div id="window-header" class="window-header">
+        <span class="window-title">Sketch Pad</span>
+        <span id="close-window-btn" class="close-button">&times;</span>
+      </div>
+      <canvas id="drawing-canvas"></canvas>
+    </div>
     <br />
   </header>
   <div class="recordBox">
@@ -281,6 +290,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="./scripts/player.js"></script>
+    <script src="./scripts/sketch.js"></script>
   </body>
   <footer>
     <p>
