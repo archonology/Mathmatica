@@ -450,7 +450,9 @@ a:focus {
 }
 
 /*  if using this app at school or on small screens, the record player will get in the way and teachers won't want multiple devices playing music in classs. This will hide the record player on tablets (horizontal and vertical) and mobile. */
-
+.recordBox {
+  display: none;
+}
 @media (max-width: 1200px) {
   .recordBox {
     display: none;
