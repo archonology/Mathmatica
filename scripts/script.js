@@ -38,6 +38,7 @@ const getTimer = document.getElementById("timerText");
 const getResultText1 = document.getElementById("resultText1");
 const getResultText2 = document.getElementById("resultText2");
 const resetBtn = document.getElementById("resetBtn");
+const sketchBtn = document.getElementById("open-window-btn");
 const getSaveForm = document.getElementById("savePlayer");
 const correctPing = document.getElementById("correctAns");
 const wrongPing = document.getElementById("wrongAns");
@@ -262,6 +263,7 @@ function initQuiz(e) {
   q1.hidden = true;
   q2.hidden = true;
   resetBtn.hidden = false;
+  sketchBtn.hidden = false;
   //Get player time select choice
   for (let i = 0; i < e.target.timeSelect.length; i++) {
     if (e.target.timeSelect[i].checked === true) {

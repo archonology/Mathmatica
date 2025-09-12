@@ -13,18 +13,13 @@
 }
 
 body {
-  /* background-image: radial-gradient(
-    circle,
-    var(--math_white) 30%,
-    var(--math_azure_light),
-    var(--math_azure_mid)
-  ); */
   background-image: url("./assets/Mathematica_2_0.png");
   height: 100vh;
   width: 100vw;
   color: var(--math_black);
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
+  user-select: none; /* Prevents text selection while dragging */
 }
 
 header {
@@ -69,6 +64,55 @@ th,
 td {
   font-family: monospace;
   color: var(--math_white);
+}
+
+/* ------- Sketch Window ---------------- */
+.window {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centers the window initially */
+  width: 350px;
+  height: 450px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  touch-action: none; /* Prevents default browser actions like zooming */
+  z-index: 1000;
+}
+
+.hidden {
+  display: none;
+}
+
+.window-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #ddd;
+  cursor: move;
+}
+
+.window-title {
+  font-weight: bold;
+}
+
+.close-button {
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+#drawing-canvas {
+  flex-grow: 1; /* Makes the canvas fill the remaining space */
+  background-color: #f9f9f9;
+  cursor: crosshair;
+  touch-action: none;
 }
 
 .recordBox {
@@ -249,7 +293,8 @@ footer {
 #numPadDel:hover {
   background-color: #fd461d;
 }
-#resetBtn {
+#resetBtn,
+#open-window-btn {
   background-color: #fd461d;
   color: black;
   padding: 1rem;
@@ -259,6 +304,11 @@ footer {
   box-shadow: 14px 9px black;
   z-index: 2;
   position: fixed;
+}
+
+#open-window-btn {
+  background-color: var(--math_azure_gold);
+  top: 250px;
 }
 
 #startTest {
